@@ -1,0 +1,48 @@
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    position: relative;
+    height: 30vh;
+width: 500px;
+  }
+  .btn-container{
+overflow: hidden;
+  }
+  .close-button_0 {
+    font-size: 1.8rem;
+    cursor: pointer;
+  }
+  .student-contents{
+    height: 100%;
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+  .student-contents p{
+    height: 40px;
+    border-radius: 5px;
+    background-color: antiquewhite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #3c3a3a;
+    font-weight: 2rem;
+  }
+  @media screen and (max-width: 620px) {
+    .modal-content {
+      font-size: .8rem;
+    }
+  }

@@ -1,0 +1,171 @@
+.container_2 {
+  display: flex;
+  height: 95vh;
+  width: 100%;
+  margin-top: 100px;
+}
+
+.sidebar {
+  width: 20%;
+  background-color: #f0f0f0;
+  padding: 10px;
+  height: 98%;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+  width: 100%;
+}
+
+.sidebar ul li {
+  cursor: pointer;
+  margin-bottom: 10px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border-bottom: 1px solid #141515;
+  justify-content: center;
+  border-radius: 5px;
+}
+
+.sidebar ul li:hover {
+  background-color: #ddd;
+}
+.content_2 {
+  text-align: center;
+  width: 80%;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 2rem;
+}
+
+.content_2 h2 {
+  margin-bottom: 10px;
+}
+
+.content_2 p {
+  margin-bottom: 5px;
+}
+
+.main-container_3 {
+  width: 100vw;
+  display: flex;
+  padding: 0;
+  padding: 1rem;
+  background: #ffffff;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.profile-modal {
+  position: fixed;
+  top: 90px;
+  right: 0;
+  width: 300px;
+  height: 100%;
+  background-color: white;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+}
+
+.profile-modal.open {
+  transform: translateX(0);
+}
+
+.profile-modal .close-btn {
+  align-self: flex-end;
+  cursor: pointer;
+  font-size: 30px;
+}
+
+.profile-modal .profile-options {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-modal .profile-options button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  margin: 5px 0;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.profile-modal .profile-options button:hover {
+  background-color: #0056b3;
+}
+.enroll-btn{
+  height: 30px;
+  border-radius: 5px;
+
+}
+.remove-btn{
+  height: 30px;
+  border-radius: 5px;
+}
+.enroll-btn button{
+  height: 100%;
+  padding:0  1rem;
+  background-color: #007bff;
+  border-radius: 5px;
+  border: none;
+  color: #ddd;
+  cursor: pointer;
+}
+.remove-btn button{
+  height: 100%;
+  padding:0  1rem;
+  background-color: #f72525;
+  border-radius: 5px;
+  border: none;
+  color: #ddd;
+  cursor: pointer;
+}
+.enroll-btn button:hover{
+  background-color: #033c79;
+}
+.remove-btn button:hover{
+  background-color: #9e0000;
+}
+@media screen and (max-width: 900px) {
+  .sidebar {
+    width: 30%;
+  }
+  .content_2 {
+    width: 70%;
+  }
+}
+@media screen and (max-width: 620px) {
+  .sidebar ul li {
+    font-size: .9rem;
+  }
+  
+.content_2 {
+  font-size: .8rem;
+}
+}
+@media screen and (max-width: 450px) {
+  .sidebar ul li {
+    font-size: .8rem;
+  }
+  
+.content_2 {
+  font-size: .7rem;
+}
+}

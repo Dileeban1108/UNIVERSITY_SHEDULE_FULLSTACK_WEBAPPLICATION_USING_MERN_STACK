@@ -1,0 +1,107 @@
+.universities-container {
+  width: 100%;
+  white-space: nowrap; 
+  padding-top: 6rem;
+  padding-bottom: 2rem;
+  background-image: url('../assets/universities.jpg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+
+.university {
+  display: inline-block;
+  width: 400px; /* Set the width of each university box */
+  height: 300px; /* Set the height of each university box */
+  border-radius: 5px;
+  box-shadow: 0 20px 20px rgba(0, 0, 0, 0.2); /* Box shadow */
+  animation: moveLeft 20s linear infinite; /* Animation to move boxes left to right */
+  padding: 20px;
+  margin: 10px;
+}
+
+.box1{
+  background-image: url('../assets/u1.jpg');
+  background-position: center;
+  background-size:100% 100%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+.box2{
+  background-image: url('../assets/u2.jpg');
+  background-position: center;
+  background-size:100% 100%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  z-index: 1000;
+}
+.box3{
+  background-image: url('../assets/u3.jpg');
+  background-position: center;
+  background-size:100% 100%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  z-index: 1000;
+}
+.box4{
+  background-image: url('../assets/u4.jpg');
+  background-position: center;
+  background-size:100% 100%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  z-index: 1000;
+}
+.box5{
+  background-image: url('../assets/u5.jpg');
+  background-position: center;
+  background-size:100% 100%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  z-index: 1000;
+}
+.box6{
+  background-image: url('../assets/u6.jpg');
+  background-position: center;
+  background-size:100% 100%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  z-index: 1000;
+}
+.box7{
+  background-image: url('../assets/u7.jpg');
+  background-position: center;
+  background-size:100% 100%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  z-index: 1000;
+}
+.box8{
+  background-image: url('../assets/u8.jpg');
+  background-position: center;
+  background-size:100% 100%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  z-index: 1000;
+}
+.box9{
+  background-image: url('../assets/u9.jpg');
+  background-position: center;
+  background-size:100% 100%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  z-index: 1000;
+}
+@keyframes moveLeft {
+  from {
+    transform: translateX(30%);
+  }
+  to {
+    transform: translateX(-260%);
+  }
+}
+.main{
+  display: flex;
+  flex-direction: column;
+}

@@ -1,0 +1,66 @@
+/* profileModal.css */
+.profile-modal_2 {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(252, 252, 252);
+    z-index: 1000;
+    width: 400px;
+    padding: 20px;
+    height: auto;
+    border-radius: 5px;
+    color: #3e3e3e;
+    z-index: 5000;
+    border-top: 10px solid #007bff;
+    border-bottom: 10px solid #007bff;
+    box-shadow: 0 0 5px black;
+  }
+  
+  .profile-modal_2.open {
+    display: block;
+  }
+  
+  .profile-modal_2 .profile-content {
+    position: relative;
+  }
+  
+  .profile-modal_2 .close-btn_2 {
+    cursor: pointer;
+    font-size: 2rem;
+    top: -10px;
+    position: relative;
+  }
+  .profile-modal_2 h2 {
+    margin-bottom: 20px;
+  }
+  
+  .profile-modal_2 .input-group {
+    margin-bottom: 15px;
+  }
+  
+  .profile-modal_2 .input-group label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .profile-modal_2 .input-group input {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    text-align: center;
+  }
+  
+  .profile-modal_2 .update-btn_2 {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+  }
+  

@@ -1,0 +1,69 @@
+.services-container {
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+  font-family: sans-serif;
+}
+
+.service {
+  border-radius: 5px;
+  padding: 20px;
+  margin-bottom: 20px;
+  height: 300px;
+  width: 250px;
+  box-shadow: 0 0 10px black;
+  transition: all 0.3s ease;
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+}
+.service h2 {
+  color: rgb(0, 136, 255);
+  background-color: aliceblue;
+}
+.service p {
+  color: rgb(0, 136, 255);
+  background-color: aliceblue;
+  font-size: 1.1rem;
+}
+.service:hover {
+  transform: scale(0.95);
+}
+.contents {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-around;
+  align-items: start;
+  height: auto;
+  width: 80%;
+  flex-wrap: wrap;
+  padding: 1rem;
+}
+.boxa {
+  background: url("../assets/sco.jpg") no-repeat;
+
+  background-size: cover;
+  background-position: center;
+}
+.boxb {
+  background: url("../assets/adCourses.jpg") no-repeat;
+
+  background-size: cover;
+  background-position: center;
+}
+.boxc {
+  background: url("../assets/appeal.png") no-repeat;
+
+  background-size: cover;
+  background-position: center;
+}
+.boxd {
+  background: url("../assets/clubs.png") no-repeat;
+
+  background-size: cover;
+  background-position: center;
+}

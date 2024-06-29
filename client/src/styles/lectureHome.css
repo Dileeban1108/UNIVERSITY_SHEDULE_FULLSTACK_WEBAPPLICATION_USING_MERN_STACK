@@ -1,0 +1,368 @@
+.container_2 {
+  display: flex;
+  height: 95vh;
+  width: 100%;
+  margin-top: 100px;
+}
+
+.sidebar {
+  width: 20%;
+  background-color: #f0f0f0;
+  padding: 10px;
+  height: 89vh;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+  width: 100%;
+}
+
+.sidebar ul li {
+  cursor: pointer;
+  margin-bottom: 10px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border-bottom: 1px solid #141515;
+  justify-content: center;
+  border-radius: 5px;
+}
+
+.sidebar ul li:hover {
+  background-color: #ddd;
+}
+
+.content_2 {
+  text-align: center;
+  width: 80%;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content_2 h2 {
+  margin-bottom: 10px;
+}
+
+.content_2 p {
+  margin-bottom: 5px;
+}
+
+.main-container_3 {
+  width: 100vw;
+  display: flex;
+  padding: 0;
+  padding: 1rem;
+  background: #ffffff;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.course-container {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+  gap: 1rem;
+  padding-top: 1rem;
+}
+
+.course {
+  height: 15%;
+  width: 80%;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  box-shadow: 0 0 2px black;
+  cursor: pointer;
+}
+
+.course:hover {
+  background-color: #007bff11;
+}
+.add-course {
+  height: 100%;
+  width: 80%;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+background: #0091ff;  
+cursor: pointer;
+color: #ddd;
+font-size: 1rem;
+}
+.add-course:hover {
+  background-color: #0162c9;
+  transition: all .3s ease;
+}
+/* Profile Icon Styles */
+.profile-icon {
+  top: 20px;
+  left: 20px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem;
+  background: #007bff;
+  border-radius: 5px;
+  color: #f0f0f0;
+  box-shadow: 0 0 5px black;
+  transition: all 0.3s ease;
+}
+.profile-icon:hover {
+  transform: scale(1.05);
+}
+.profile-icon .img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: url("../assets/user.jpg") no-repeat;
+  background-size: cover;
+}
+
+.profile-name {
+  margin-top: 5px;
+  font-size: 14px;
+  color: #f0f0f0;
+}
+
+/* Profile Modal Styles */
+.profile-modal {
+  position: fixed;
+  top: 90px;
+  right: 0;
+  width: 300px;
+  height: 100%;
+  background-color: white;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+}
+
+.profile-modal.open {
+  transform: translateX(0);
+}
+
+.profile-modal .close-btn {
+  align-self: flex-end;
+  cursor: pointer;
+  font-size: 30px;
+}
+
+.profile-modal .profile-options {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-modal .profile-options button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  margin: 5px 0;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.profile-modal .profile-options button:hover {
+  background-color: #0056b3;
+}
+
+.add-course-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.add-course-form {
+  background-color: white;
+  text-align: center;
+  width: 35%;
+  border-radius: 5px;
+  padding-bottom: 1rem;
+}
+.add-course-form .add-btn {
+  width: 85%;
+  margin-top: 1rem;
+  border: solid;
+}
+
+.form-close-btn {
+  font-size: 30px;
+  cursor: pointer;
+  display: flex;
+  justify-content: end;
+  position: relative;
+  right: 10px;
+}
+.student-list {
+  height: 75vh;
+  overflow: auto;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+}
+.student {
+  height: 50px;
+  width: 80%;
+  border-radius: 5px;
+  background-color: bisque;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  font-weight: 2rem;
+}
+.student:hover{
+  background-color: rgb(234, 179, 112);
+}
+.section-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  gap: 20px;
+}
+.add-container{
+height: 60px;
+display: flex;
+justify-content: center;
+align-items: center;
+margin-top: 1rem;
+}
+.items-container{
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  padding: 1rem;
+  overflow: auto;
+}
+.item{
+  height: 130px;
+  width: 80%;
+  background-color: bisque;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #007afd;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.itemx{
+  height: 130px;
+  width: 80%;
+  background-color: bisque;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #007afd;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.itemx:hover{
+  .delete-icon{
+    display: block;
+  }
+  background-color: rgb(166, 164, 164);
+}
+.btn-container{
+  display: flex;
+  justify-content: space-between;
+}
+.btn-container h2{
+width: 90%;
+text-align: center;
+padding-left: 30px;
+}
+.btn-container button{
+width: 10%;
+text-align: center;
+background-color: #007BFF;
+color: #ffffff;
+padding: .5rem;
+border-radius: 5px;
+border: none;
+}
+.grade-container{
+  width: 50%;
+  height: 50px;
+  overflow-y: auto;
+  padding: .5rem;
+}
+.delete-icon{
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5em;
+  color: red; 
+  overflow: hidden;
+  display: none;
+  width: 100%;
+}
+@media screen and (max-width: 900px) {
+  .sidebar {
+    width: 30%;
+  }
+  .content_2 {
+    width: 70%;
+  }
+}
+@media screen and (max-width: 620px) {
+  .sidebar ul li {
+    font-size: .9rem;
+  }
+  
+.content_2 {
+  font-size: .8rem;
+}
+}
+@media screen and (max-width: 450px) {
+  .sidebar ul li {
+    font-size: .8rem;
+  }
+  
+.content_2 {
+  font-size: .7rem;
+}
+}
+.deleteIcon{
+  background-color: #007BFF;
+  padding: .5rem 1rem;
+  border: none;
+  color: #ffffff;
+  border-radius: 5px;
+  margin: 5px;
+}

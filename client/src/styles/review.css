@@ -1,0 +1,90 @@
+.reviewsx {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+  padding:90px 0 3rem 0;
+  background: url('../assets/universities.jpg') no-repeat;
+  background-size: cover;
+  background-attachment: fixed; 
+  flex-direction: column;
+  color: #ffffff;
+  width: 100%;
+}
+
+.review-containerx {
+  width: 80%;
+  height: 80%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden; 
+  gap: 3rem;
+  margin-top: 2rem;
+}
+
+.review-boxx {
+  flex: 0 0 auto; 
+  width: 26.5%; 
+  height: 200px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.5s ease;
+  font-family: sans-serif;
+  background-color: #f9f9f9;
+  color: black;
+  border-bottom: 10px solid rgb(0, 119, 255);
+  border-top: 10px solid rgb(0, 119, 255);
+}
+
+.review-boxx img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-bottom: 20px;
+}
+
+.review-boxx h3 {
+  margin-bottom: 10px;
+}
+ 
+
+
+
+.review-inputsx{
+  width: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+ padding: 1rem;
+border-radius: 10px;
+text-align: center;}
+.review-formx{
+  width: 80%;
+  margin-top: 2rem;
+}
+.textx{
+  background-color: #f9f9f9;
+  width: 450px;
+  color: #515253;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+}
+.sub2x{
+  width: 150px;
+
+}
+.sub2x button{
+  height: 100%;
+  padding: 1rem;
+
+}
+@media screen and (max-width: 600px) {
+
+  .review-boxx{
+    width: 150px;
+  }
+}
