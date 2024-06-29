@@ -1,0 +1,2 @@
+# UNIVERSITY_SHEDULE_FULLSTACK_WEBAPPLICATION_USING_MERN_STACK
+This project describes university functions
