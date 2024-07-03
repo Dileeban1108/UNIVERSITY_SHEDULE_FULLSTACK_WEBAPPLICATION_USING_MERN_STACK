@@ -34,14 +34,14 @@ A management system for schools built with the MERN stack.
    ```sh
    git clone https://github.com/Dileeban1108/UNIVERSITY_SHEDULE_FULLSTACK_WEBAPPLICATION_USING_MERN_STACK.git
 **note : if you cannot clone the repositaory please download the zip**
-## Run the frontend
+## Run the Backend
 1. Open a new terminal and Copy and Paste
    ```sh
-   cd server
+   cd servers
    npm install   
    npm start
    
-## Run the Backend
+## Run the frontend
 1. Open a new terminal and Copy and Paste
    ```sh
    cd client
