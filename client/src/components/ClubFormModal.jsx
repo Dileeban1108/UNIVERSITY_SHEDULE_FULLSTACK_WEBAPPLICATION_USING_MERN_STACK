@@ -8,22 +8,23 @@ const ScholarshipFormModal = ({ onClose }) => {
   const [selectedClub, setSelectedClub] = useState("");
   const [clubs, setClubs] = useState([]);
   const [formData, setFormData] = useState({
-    name: "",
-    studentNumber: "",
+    username: "",
+    studentnumber: "",
     email: "",
-    clubName: "",
+    clubname: "",
     faculty: "",
     department: "",
-    selectedClub: ""
   });
 
   useEffect(() => {
     const loadClubs = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/other/getClubs`);
+        const response = await axios.get(
+          `http://localhost:3001/other/getClubs`
+        );
         setClubs(response.data);
       } catch (error) {
-        console.error('Error fetching clubs:', error);
+        console.error("Error fetching clubs:", error);
       }
     };
 
@@ -37,7 +38,7 @@ const ScholarshipFormModal = ({ onClose }) => {
 
   const handleClubClick = (clubName) => {
     setSelectedClub(clubName);
-    setFormData({ ...formData, selectedClub: clubName });
+    setFormData({ ...formData, clubname: clubName });
   };
 
   const handleInputChange = (event) => {
@@ -48,18 +49,35 @@ const ScholarshipFormModal = ({ onClose }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post(`http://localhost:3001/other/joinClub`, formData);
-      console.log('Club joined successfully', response.data);
+      const response = await axios.post(
+        `http://localhost:3001/other/joinClub`,
+        formData
+      );
+      console.log("Club joined successfully", response.data);
+      toast.success("Club joined successfully", {
+        icon: "👏",
+        style: {
+          border: "1px solid #4caf50",
+          padding: "16px",
+          color: "#4caf50",
+        },
+      });
       closeModal();
-      toast.success("applied Successfully");
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error("Something went wrong", {
+        icon: "❌",
+        style: {
+          border: "1px solid #ff4d4f",
+          padding: "16px",
+          color: "#ff4d4f",
+        },
+      });
     }
   };
 
   return (
     <div className={`modalx ${isOpen ? "open" : ""}`}>
-      <Toaster position="top-right"/>
+      <Toaster position="top-right" />
       <div className="modal-contentx">
         <div className="btn-container">
           <h2>Join A Club</h2>
@@ -78,21 +96,21 @@ const ScholarshipFormModal = ({ onClose }) => {
               ))}
             </ul>
           </div>
-          <form  className="formx" onSubmit={handleSubmit}>
+          <form className="formx" onSubmit={handleSubmit}>
             <input
               type="text"
-              name="name"
+              name="username"
               required
               placeholder="Your Name"
-              value={formData.name}
+              value={formData.username}
               onChange={handleInputChange}
             />
             <input
               type="text"
-              name="studentNumber"
+              name="studentnumber"
               required
               placeholder="Student Number"
-              value={formData.studentNumber}
+              value={formData.studentnumber}
               onChange={handleInputChange}
             />
             <input
@@ -105,10 +123,10 @@ const ScholarshipFormModal = ({ onClose }) => {
             />
             <input
               type="text"
-              name="clubName"
+              name="clubname"
               required
               placeholder="Club Name"
-              value={formData.clubName}
+              value={formData.clubname}
               onChange={handleInputChange}
             />
             <input
@@ -126,14 +144,6 @@ const ScholarshipFormModal = ({ onClose }) => {
               placeholder="Department"
               value={formData.department}
               onChange={handleInputChange}
-            />
-            <input
-              type="text"
-              name="selectedClub"
-              required
-              placeholder="Selected Club"
-              value={selectedClub}
-              readOnly
             />
             <button type="submit">Submit</button>
           </form>

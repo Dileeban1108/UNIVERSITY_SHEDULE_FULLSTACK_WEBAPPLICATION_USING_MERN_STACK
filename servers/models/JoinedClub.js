@@ -22,10 +22,6 @@ const joinedClubSchema = new Schema(
         type: String,
         required: true,
     },
-    description: {
-        type: String,
-        required: true,
-    },
     clubname:{
         type: String,
         required: true, 

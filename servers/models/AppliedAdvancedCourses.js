@@ -22,10 +22,6 @@ const appliedAdvancedCourseSchema = new Schema(
         type: String,
         required: true,
     },
-    description: {
-        type: String,
-        required: true,
-    },
     coursename:{
         type: String,
         required: true, 

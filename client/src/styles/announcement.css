@@ -1,3 +1,12 @@
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%); /* Only move halfway to account for duplication */
+    }
+}
+
 .announcement-container {
     overflow: hidden;
     height: auto; 
@@ -11,6 +20,7 @@
     background-size: cover;
     background-attachment: fixed;
     padding: 10px 0;
+    width: 100vw;
 }
 
 .slider {
@@ -19,21 +29,26 @@
     width: 100%; /* Adjusted width to fit two sets of slides */
 }
 
+.slider:hover {
+    animation-play-state: paused; /* Pauses the animation on hover */
+}
+
 .slide {
     width: 90vw;
     position: relative;
+    padding: 50px;
 }
 
 .bac-img-container {
     display: flex;
-    height: 600px;
+    height: 650px;
     border-radius: 10px;
     justify-content: center;
     align-items: center;
 }
 
 .bac-img {
-    width: 70%;
+    width: 80%;
     height: 100%;
     border-radius: 10px;
 }
@@ -71,15 +86,6 @@
     font-size: 2rem;
     font-weight: bold;
     text-align: center;
-}
-
-@keyframes scroll {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-50%); /* Only move halfway to account for duplication */
-    }
 }
 
 .delete_icon {

@@ -1,18 +1,17 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "../styles/modal.css";
-import toast from "react-hot-toast";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 
 const ApealFormModal = ({ onClose }) => {
   const [isOpen, setIsOpen] = useState(true);
   const [formData, setFormData] = useState({
-    name: "",
-    studentNumber: "",
+    username: "",
+    studentnumber: "",
     email: "",
     faculty: "",
     department: "",
-    appealdes: ""
+    appealdes: "",
   });
 
   const closeModal = () => {
@@ -28,18 +27,36 @@ const ApealFormModal = ({ onClose }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post(`http://localhost:3001/other/createAppeal`, formData);
+      const response = await axios.post(
+        `http://localhost:3001/other/createAppeal`,
+        formData
+      );
       // Handle the response if needed
       closeModal();
-      toast.success("Appelled Successfully");
+      toast.success("successfully  applied", {
+        icon: "👏",
+        style: {
+          border: "1px solid #4caf50",
+          padding: "16px",
+          color: "#4caf50",
+        },
+      });
+      setTimeout(() => {}, 2000);
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error("Something went wrong.", {
+        icon: "❌",
+        style: {
+          border: "1px solid #ff4d4f",
+          padding: "16px",
+          color: "#ff4d4f",
+        },
+      });
     }
   };
 
   return (
     <div className={`modalx ${isOpen ? "open" : ""}`}>
-      <Toaster position="top-right"/>
+      <Toaster position="top-right" />
       <div className="modal-contentx">
         <div className="btn-container">
           <h2>Appeal</h2>
@@ -50,18 +67,18 @@ const ApealFormModal = ({ onClose }) => {
         <form className="form_2" onSubmit={handleSubmit}>
           <input
             type="text"
-            name="name"
+            name="username"
             required
             placeholder="Your Name"
-            value={formData.name}
+            value={formData.username}
             onChange={handleInputChange}
           />
           <input
             type="text"
-            name="studentNumber"
+            name="studentnumber"
             required
             placeholder="Student Number"
-            value={formData.studentNumber}
+            value={formData.studentnumber}
             onChange={handleInputChange}
           />
           <input

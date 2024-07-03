@@ -1,28 +1,29 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../styles/modal.css";
+import toast, { Toaster } from "react-hot-toast";
 
 const AdvancedCourseFormModal = ({ onClose }) => {
   const [isOpen, setIsOpen] = useState(true);
-  const [selectedCourse, setSelectedCourse] = useState("");
   const [courses, setCourses] = useState([]);
   const [formData, setFormData] = useState({
-    name: "",
-    studentNumber: "",
+    username: "",
+    studentnumber: "",
     email: "",
     faculty: "",
     department: "",
-    reason: "",
-    course: ""
+    coursename: "", 
   });
 
   useEffect(() => {
     const loadCourses = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/other/getAdvancedCourses`);
-        setCourses(response.data);
+        const response = await axios.get(
+          `http://localhost:3001/other/getAdvancedCourses`
+        );
+        setCourses(response.data); // Ensure to set the courses data correctly
       } catch (error) {
-        console.error('Error fetching courses:', error);
+        console.log(error);
       }
     };
 
@@ -35,8 +36,7 @@ const AdvancedCourseFormModal = ({ onClose }) => {
   };
 
   const handleCourseClick = (courseName) => {
-    setSelectedCourse(courseName);
-    setFormData({ ...formData, course: courseName });
+    setFormData({ ...formData, coursename: courseName }); // Ensure to set 'coursename' field
   };
 
   const handleInputChange = (event) => {
@@ -47,16 +47,36 @@ const AdvancedCourseFormModal = ({ onClose }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post(`http://localhost:3001/other/applyAdvancedCourse`, formData);
-      console.log('Application submitted successfully', response.data);
+      const response = await axios.post(
+        `http://localhost:3001/other/applyAdvancedCourse`,
+        formData
+      );
+      console.log("Application submitted successfully", response.data);
+      toast.success("Application submitted successfully", {
+        icon: "👏",
+        style: {
+          border: "1px solid #4caf50",
+          padding: "16px",
+          color: "#4caf50",
+        },
+      });
       closeModal();
     } catch (error) {
-      console.error('Error submitting application:', error);
+      console.error("Error submitting application:", error);
+      toast.error("Error submitting application.", {
+        icon: "❌",
+        style: {
+          border: "1px solid #ff4d4f",
+          padding: "16px",
+          color: "#ff4d4f",
+        },
+      });
     }
   };
 
   return (
     <div className={`modalx ${isOpen ? "open" : ""}`}>
+      <Toaster position="top-right" />
       <div className="modal-contentx">
         <div className="btn-container">
           <h2>Apply For An Advanced Course</h2>
@@ -68,10 +88,13 @@ const AdvancedCourseFormModal = ({ onClose }) => {
           <div className="list">
             <ul>
               {courses.map((course) => (
-                <li key={course.id} onClick={() => handleCourseClick(course.name)}>
+                <li
+                  key={course.id}
+                  onClick={() => handleCourseClick(course.name)}
+                >
                   <h4>{course.name}</h4>
                   <h6>{course.description}</h6>
-                  <h5>dead line:{course.deadline}</h5>
+                  <h5>Deadline: {course.deadline}</h5>
                 </li>
               ))}
             </ul>
@@ -79,18 +102,26 @@ const AdvancedCourseFormModal = ({ onClose }) => {
           <form className="formx" onSubmit={handleSubmit}>
             <input
               type="text"
-              name="name"
+              name="coursename"
+              required
+              placeholder="Course Name"
+              value={formData.coursename}
+              readOnly
+            />
+            <input
+              type="text"
+              name="username"
               required
               placeholder="Your Name"
-              value={formData.name}
+              value={formData.username}
               onChange={handleInputChange}
             />
             <input
               type="text"
-              name="studentNumber"
+              name="studentnumber"
               required
               placeholder="Student Number"
-              value={formData.studentNumber}
+              value={formData.studentnumber}
               onChange={handleInputChange}
             />
             <input
@@ -117,20 +148,7 @@ const AdvancedCourseFormModal = ({ onClose }) => {
               value={formData.department}
               onChange={handleInputChange}
             />
-            <input
-              type="text"
-              name="course"
-              required
-              placeholder="Course Name"
-              value={selectedCourse}
-              readOnly
-            />
-            <textarea
-              name="reason"
-              placeholder="Write The Reason Why You Are Applying"
-              value={formData.reason}
-              onChange={handleInputChange}
-            ></textarea>
+
             <button type="submit">Submit</button>
           </form>
         </div>

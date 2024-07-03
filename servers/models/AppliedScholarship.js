@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const appliedAdvancedCourseSchema = new Schema(
+const appliedScholarshipSchema = new Schema(
   {
     username: {
       type: String,
@@ -22,7 +22,7 @@ const appliedAdvancedCourseSchema = new Schema(
         type: String,
         required: true,
     },
-    description: {
+    reason: {
         type: String,
         required: true,
     },
@@ -34,4 +34,4 @@ const appliedAdvancedCourseSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("AppliedAdvansedCourse", appliedAdvancedCourseSchema);
+module.exports = mongoose.model("AppliedScholarship", appliedScholarshipSchema);

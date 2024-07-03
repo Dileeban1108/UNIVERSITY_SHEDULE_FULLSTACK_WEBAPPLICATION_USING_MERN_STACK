@@ -3,6 +3,7 @@ import "../styles/announcement.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
 
 const Announcement = ({ userRole }) => {
   const [announcements, setAnnouncements] = useState([]);
@@ -28,18 +29,42 @@ const Announcement = ({ userRole }) => {
     fetchAnnouncements();
   }, []);
 
-  const handleDelete = async (index) => {
+  const handleDelete = async (id) => {
     try {
-      await axios.delete("http://localhost:3001/auth/deleteAnnouncement", {
-        data: { index },
-      });
-      setAnnouncements((prevAnnouncements) =>
-        prevAnnouncements.filter((announcement) => announcement._id !== index)
-      );
+      const response = await axios.delete(`http://localhost:3001/auth/deleteAnnouncement/${id}`);
+      if (response.status === 200) {
+        setAnnouncements((prevAnnouncements) =>
+          prevAnnouncements.filter((announcement) => announcement._id !== id)
+        );
+        toast.success("Announcement deleted successfully", {
+          icon: "👏",
+          style: {
+            border: "1px solid #4caf50",
+            padding: "16px",
+            color: "#4caf50",
+          },
+        });      } else {
+        toast.error("Error deleting announcement.", {
+          icon: "❌",
+          style: {
+            border: "1px solid #ff4d4f",
+            padding: "16px",
+            color: "#ff4d4f",
+          },
+        });      }
     } catch (error) {
       console.error("Error deleting announcement:", error);
+      toast.error("Error deleting announcement.", {
+        icon: "❌",
+        style: {
+          border: "1px solid #ff4d4f",
+          padding: "16px",
+          color: "#ff4d4f",
+        },
+      });
     }
   };
+  
 
   return (
     <section className="services">

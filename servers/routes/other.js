@@ -10,6 +10,10 @@ router.post('/createClub',otherController.createClub );
 router.post('/createAppeal',otherController.createAppeal );
 router.post('/joinClub',otherController.joinClub );
 router.get('/getScholarships', otherController.getScholarships);
+router.get('/getAppliedScholarships', otherController.getAppliedScholarships);
+router.get('/getAppliedAdvancedCourses', otherController.getAppliedAdvancedCourses);
+router.get('/getAppeals', otherController.getAppeals);
+router.get('/getAppliedClubs', otherController.getAppliedClubs);
 router.get('/getAdvancedCourses', otherController.getAdvancedCourses);
 router.get('/getClubs', otherController.getClubs);
 
