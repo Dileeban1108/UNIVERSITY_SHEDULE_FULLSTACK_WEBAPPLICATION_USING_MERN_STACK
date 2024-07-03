@@ -13,13 +13,18 @@ const StudentWelfareHome = ({ userRole }) => {
   const [activeSection, setActiveSection] = useState("advancedcourses");
   const [isProfileModalOpen, setProfileModalOpen] = useState(false);
   const [isProfileModalOpen_2, setProfileModalOpen_2] = useState(false);
-  const [isAddAdvancedCourseFormOpen, setAddAdvancedCourseFormOpen] =useState(false);
+  const [isAddAdvancedCourseFormOpen, setAddAdvancedCourseFormOpen] =
+    useState(false);
   const [isAddClubFormOpen, setAddClubFormOpen] = useState(false);
   const [isAddScholarshipFormOpen, setAddScholarshipFormOpen] = useState(false);
   const [userDetails, setUserDetails] = useState({});
   const [advancedCourses, setAdvancedCourses] = useState([]);
   const [clubs, setClubs] = useState([]);
   const [scholarships, setScholarships] = useState([]);
+  const [appliedScholarships, setAppliedScholarships] = useState([]);
+  const [appliedAdvancedCourses, setAppliedAdvancedCourses] = useState([]);
+  const [appliedClubs, setAppliedClubs] = useState([]);
+  const [appeals, setAppeals] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [isStudentModalOpen, setStudentModalOpen] = useState(false);
   const [showAnnouncementModal, setShowAnnouncementModal] = useState(false);
@@ -83,9 +88,23 @@ const StudentWelfareHome = ({ userRole }) => {
         deadline: "",
       });
       setAddAdvancedCourseFormOpen(false);
-      toast.success("New advanced course added");
+      toast.success("New advanced course added successfully", {
+        icon: "👏",
+        style: {
+          border: "1px solid #4caf50",
+          padding: "16px",
+          color: "#4caf50",
+        },
+      });
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error("Something went wrong.", {
+        icon: "❌",
+        style: {
+          border: "1px solid #ff4d4f",
+          padding: "16px",
+          color: "#ff4d4f",
+        },
+      });
     }
   };
 
@@ -101,9 +120,23 @@ const StudentWelfareHome = ({ userRole }) => {
         description: "",
       });
       setAddClubFormOpen(false);
-      toast.success("New club added");
+      toast.success("New club added successfully", {
+        icon: "👏",
+        style: {
+          border: "1px solid #4caf50",
+          padding: "16px",
+          color: "#4caf50",
+        },
+      });
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error("Something went wrong.", {
+        icon: "❌",
+        style: {
+          border: "1px solid #ff4d4f",
+          padding: "16px",
+          color: "#ff4d4f",
+        },
+      });
     }
   };
 
@@ -120,9 +153,23 @@ const StudentWelfareHome = ({ userRole }) => {
         deadline: "",
       });
       setAddScholarshipFormOpen(false);
-      toast.success("New scholarship added");
+      toast.success("New scholarship added successfully", {
+        icon: "👏",
+        style: {
+          border: "1px solid #4caf50",
+          padding: "16px",
+          color: "#4caf50",
+        },
+      });
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error("Something went wrong.", {
+        icon: "❌",
+        style: {
+          border: "1px solid #ff4d4f",
+          padding: "16px",
+          color: "#ff4d4f",
+        },
+      });
     }
   };
 
@@ -161,6 +208,46 @@ const StudentWelfareHome = ({ userRole }) => {
       console.error("Failed to fetch scholarships", error);
     }
   };
+  const fetchAppliedScholarships = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3001/other/getAppliedScholarships`
+      );
+      setAppliedScholarships(response.data);
+    } catch (error) {
+      console.error("Failed to fetch scholarships", error);
+    }
+  };
+  const fetchAppliedAdvancedCourses = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3001/other/getAppliedAdvancedCourses`
+      );
+      setAppliedAdvancedCourses(response.data);
+    } catch (error) {
+      console.error("Failed to fetch scholarships", error);
+    }
+  };
+  const fetchAppeals = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3001/other/getAppeals`
+      );
+      setAppeals(response.data);
+    } catch (error) {
+      console.error("Failed to fetch scholarships", error);
+    }
+  };
+  const fetchAppliedClubs = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3001/other/getAppliedClubs`
+      );
+      setAppliedClubs(response.data);
+    } catch (error) {
+      console.error("Failed to fetch scholarships", error);
+    }
+  };
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -179,7 +266,11 @@ const StudentWelfareHome = ({ userRole }) => {
         console.error("Failed to fetch user details", error);
       }
     };
-
+    
+    fetchAppliedClubs();
+    fetchAppeals();
+    fetchAppliedAdvancedCourses();
+    fetchAppliedScholarships();
     fetchUserDetails();
     fetchCourses();
     fetchClubs();
@@ -276,6 +367,18 @@ const StudentWelfareHome = ({ userRole }) => {
             <li onClick={() => handleSectionChange("announcements")}>
               Add Announcement
             </li>
+            <li onClick={() => handleSectionChange("advancedcourseapplications")}>
+              Advanced Course Applications
+            </li>
+            <li onClick={() => handleSectionChange("scholarshipapplications")}>
+              Scholarship Applications
+            </li>
+            <li onClick={() => handleSectionChange("appealapplications")}>
+              Appeal Applications
+            </li>
+            <li onClick={() => handleSectionChange("clubapplications")}>
+              Club Applications
+            </li>
           </ul>
         </div>
 
@@ -369,6 +472,71 @@ const StudentWelfareHome = ({ userRole }) => {
                 >
                   <p>+ Add Announcement</p>
                 </div>
+              </div>
+            </div>
+          )}
+          {activeSection === "scholarshipapplications" && (
+            <div className="section-container">
+              <div className="items-container">
+                {appliedScholarships.map((appliedScholarship, index) => (
+                  <div className="item" key={index}>
+                    <h4>Scholarship Name: {appliedScholarship.scholarshipname}</h4>
+                    <h4>Student Name: {appliedScholarship.username}</h4>
+                    <h4>Student Number: {appliedScholarship.studentnumber}</h4>
+                    <h4>Student email: {appliedScholarship.email}</h4>
+                    <h4>Student faculty: {appliedScholarship.faculty}</h4>
+                    <h4>Student department: {appliedScholarship.department}</h4>
+                    <h4 style={{overflowY:"scroll"}}>Reason: {appliedScholarship.reason}</h4>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {activeSection === "advancedcourseapplications" && (
+            <div className="section-container">
+              <div className="items-container">
+                {appliedAdvancedCourses.map((appliedAdvancedCourse, index) => (
+                  <div className="item" key={index}>
+                    <h4>Course Name: {appliedAdvancedCourse.coursename}</h4>
+                    <h4>Student Name: {appliedAdvancedCourse.username}</h4>
+                    <h4>Student Number: {appliedAdvancedCourse.studentNumber}</h4>
+                    <h4>Student email: {appliedAdvancedCourse.email}</h4>
+                    <h4>Student faculty: {appliedAdvancedCourse.faculty}</h4>
+                    <h4>Student department: {appliedAdvancedCourse.department}</h4>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {activeSection === "appealapplications" && (
+            <div className="section-container">
+              <div className="items-container">
+                {appeals.map((appeal, index) => (
+                  <div className="item" key={index}>
+                    <h4 style={{overflowY:"scroll"}}>Appeal: {appeal.appealdes}</h4>
+                    <h4>Student Name: {appeal.username}</h4>
+                    <h4>Student Number: {appeal.studentnumber}</h4>
+                    <h4>Student email: {appeal.email}</h4>
+                    <h4>Student faculty: {appeal.faculty}</h4>
+                    <h4>Student department: {appeal.department}</h4>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {activeSection === "clubapplications" && (
+            <div className="section-container">
+              <div className="items-container">
+                {appliedClubs.map((appliedClub, index) => (
+                  <div className="item" key={index}>
+                    <h4>Club Name: {appliedClub.clubname}</h4>
+                    <h4>Student Name: {appliedClub.username}</h4>
+                    <h4>Student Number: {appliedClub.studentnumber}</h4>
+                    <h4>Student email: {appliedClub.email}</h4>
+                    <h4>Student faculty: {appliedClub.faculty}</h4>
+                    <h4>Student department: {appliedClub.department}</h4>
+                  </div>
+                ))}
               </div>
             </div>
           )}

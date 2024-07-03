@@ -255,27 +255,37 @@ align-items: center;
 margin-top: 1rem;
 }
 .items-container{
-  height: 90%;
+  height: 770px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 30px;
   padding: 1rem;
-  overflow: auto;
+  overflow-y: scroll;
 }
 .item{
-  height: 130px;
+  flex: 0 0 auto;
+  height: 200px;
   width: 80%;
-  background-color: bisque;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: #007afd;
+  color: #6e6e6e;
   display: flex;
   justify-content: space-around;
   align-items: center;
+box-shadow: 0 0 3px #007afd;
+}
+.item h4{
+  width: 60%;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+border-bottom: .1px solid #007afd;
 }
 .itemx{
   height: 130px;

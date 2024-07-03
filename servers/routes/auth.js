@@ -16,7 +16,7 @@ router.get("/getReviews", authController.getReviews);
 router.post("/createReview", authController.createReview);
 router.post("/createAnnouncement", authController.handleNewAnnouncement);
 router.get("/getAnnouncements", authController.getAnnouncements);
-router.delete("/deleteAnnouncement", authController.deleteAnnouncement);
+router.delete("/deleteAnnouncement/:id", authController.deleteAnnouncement);
 
 
 module.exports = router;

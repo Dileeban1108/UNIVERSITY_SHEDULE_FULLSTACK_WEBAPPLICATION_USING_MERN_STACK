@@ -14,7 +14,7 @@ const applyScholarship = async (req, res) => {
     email,
     faculty,
     department,
-    description,
+    reason,
     scholarshipname,
   } = req.body;
   if (!username || !studentnumber || !email || !faculty || !department)
@@ -29,7 +29,7 @@ const applyScholarship = async (req, res) => {
       email: email,
       faculty: faculty,
       department: department,
-      description: description,
+      reason: reason,
       scholarshipname: scholarshipname,
     });
 
@@ -46,7 +46,6 @@ const applyAdvancedCourse = async (req, res) => {
     email,
     faculty,
     department,
-    description,
     coursename,
   } = req.body;
   if (!username || !studentnumber || !email || !faculty || !department)
@@ -61,7 +60,6 @@ const applyAdvancedCourse = async (req, res) => {
       email: email,
       faculty: faculty,
       department: department,
-      description: description,
       coursename: coursename,
     });
 
@@ -72,7 +70,7 @@ const applyAdvancedCourse = async (req, res) => {
   }
 };
 const createAppeal = async (req, res) => {
-  const { username, studentnumber, email, faculty, department, description } =
+  const { username, studentnumber, email, faculty, department, appealdes } =
     req.body;
   if (!username || !studentnumber || !email || !faculty || !department)
     return res
@@ -86,7 +84,7 @@ const createAppeal = async (req, res) => {
       email: email,
       faculty: faculty,
       department: department,
-      description: description,
+      appealdes: appealdes,
     });
 
     res.status(200).json({ success: " created" });
@@ -164,7 +162,6 @@ const joinClub = async (req, res) => {
     email,
     faculty,
     department,
-    description,
     clubname,
   } = req.body;
   if (!username || !studentnumber || !email || !faculty || !department)
@@ -179,7 +176,6 @@ const joinClub = async (req, res) => {
       email: email,
       faculty: faculty,
       department: department,
-      description: description,
       clubname: clubname,
     });
 
@@ -192,6 +188,15 @@ const joinClub = async (req, res) => {
 const getScholarships = async (req, res) => {
   try {
     const scholarship = await Scholarship.find();
+    res.status(200).json(scholarship);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to fetch" });
+  }
+};
+const getAppliedScholarships = async (req, res) => {
+  try {
+    const scholarship = await AppliedScholarship.find();
     res.status(200).json(scholarship);
   } catch (error) {
     console.error(error);
@@ -216,6 +221,33 @@ const getClubs = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch" });
   }
 };
+const getAppliedAdvancedCourses = async (req, res) => {
+  try {
+    const clubs = await AppliedAdvancedCourse.find();
+    res.status(200).json(clubs);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to fetch" });
+  }
+};
+const getAppeals = async (req, res) => {
+  try {
+    const clubs = await Appeal.find();
+    res.status(200).json(clubs);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to fetch" });
+  }
+};
+const getAppliedClubs = async (req, res) => {
+  try {
+    const clubs = await JoinedClub.find();
+    res.status(200).json(clubs);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to fetch" });
+  }
+};
 module.exports = {
   applyScholarship,
   applyAdvancedCourse,
@@ -226,5 +258,9 @@ module.exports = {
   getScholarships,
   createScholarship,
   createAdvancedCourse,
-  createClub
+  createClub,
+  getAppliedScholarships,
+  getAppliedAdvancedCourses,
+  getAppeals,
+  getAppliedClubs,
 };

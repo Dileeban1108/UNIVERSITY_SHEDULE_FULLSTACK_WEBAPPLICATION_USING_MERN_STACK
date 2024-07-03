@@ -12,7 +12,7 @@ const LectureProfileModal = ({ isOpen, onClose }) => {
     faculty: "",
     university: "",
     address: "",
-    position: ""
+    position: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -58,13 +58,34 @@ const LectureProfileModal = ({ isOpen, onClose }) => {
         userDetails
       );
       if (response.data.success) {
-        toast.success("Updated Successfully");
+        toast.success("successfully  updated", {
+          icon: "👏",
+          style: {
+            border: "1px solid #4caf50",
+            padding: "16px",
+            color: "#4caf50",
+          },
+        });
         onClose();
       } else {
-        toast.error("Failed to update profile");
+        toast.error("Failed to update.", {
+          icon: "❌",
+          style: {
+            border: "1px solid #ff4d4f",
+            padding: "16px",
+            color: "#ff4d4f",
+          },
+        });
       }
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error("Failed to update.", {
+        icon: "❌",
+        style: {
+          border: "1px solid #ff4d4f",
+          padding: "16px",
+          color: "#ff4d4f",
+        },
+      });
     }
   };
 

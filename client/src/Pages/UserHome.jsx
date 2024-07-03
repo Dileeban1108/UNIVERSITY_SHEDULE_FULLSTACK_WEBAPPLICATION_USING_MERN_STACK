@@ -151,12 +151,33 @@ const UserHome = ({ userRole }) => {
           prevCourses.filter((c) => c.coursecode !== course.coursecode)
         );
         fetchEnrolledCourses();
-        toast.success("Successfully enroll the course");
+        toast.success("Successfully enroll the course", {
+          icon: "👏",
+          style: {
+            border: "1px solid #4caf50",
+            padding: "16px",
+            color: "#4caf50",
+          },
+        });
       } else {
-        toast.error("Something went wrong");
+        toast.error("Something went wrong.", {
+          icon: "❌",
+          style: {
+            border: "1px solid #ff4d4f",
+            padding: "16px",
+            color: "#ff4d4f",
+          },
+        });
       }
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error("Something went wrong.", {
+        icon: "❌",
+        style: {
+          border: "1px solid #ff4d4f",
+          padding: "16px",
+          color: "#ff4d4f",
+        },
+      });
     }
   };
 
@@ -167,12 +188,33 @@ const UserHome = ({ userRole }) => {
       );
       if (response.status === 200) {
         fetchEnrolledCourses();
-        toast.success("Successfully logged in");
+        toast.success("Successfully remove the course", {
+          icon: "👏",
+          style: {
+            border: "1px solid #4caf50",
+            padding: "16px",
+            color: "#4caf50",
+          },
+        });
       } else {
-        toast.error("Something went wrong");
+        toast.error("Something went wrong.", {
+          icon: "❌",
+          style: {
+            border: "1px solid #ff4d4f",
+            padding: "16px",
+            color: "#ff4d4f",
+          },
+        });
       }
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error("Something went wrong.", {
+        icon: "❌",
+        style: {
+          border: "1px solid #ff4d4f",
+          padding: "16px",
+          color: "#ff4d4f",
+        },
+      });
     }
   };
   const fetchGrades = async () => {
@@ -194,9 +236,12 @@ const UserHome = ({ userRole }) => {
   const formatStudentNumber = (studentnumber) => {
     // Assuming the format is SE2020027 and we want to convert it to SE/2020/027
     if (studentnumber.length !== 9) return studentnumber; // Ensure valid length before formatting
-    return `${studentnumber.slice(0, 2)}/${studentnumber.slice(2, 6)}/${studentnumber.slice(6)}`;
+    return `${studentnumber.slice(0, 2)}/${studentnumber.slice(
+      2,
+      6
+    )}/${studentnumber.slice(6)}`;
   };
-  
+
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
@@ -232,7 +277,7 @@ const UserHome = ({ userRole }) => {
 
   return (
     <div className="container_2">
-      <Toaster position="top-right"/>
+      <Toaster position="top-right" />
       <div className="main-container_3">
         <div className="sidebar">
           <div className="profile-icon" onClick={toggleProfileModal}>
@@ -255,7 +300,7 @@ const UserHome = ({ userRole }) => {
             <li onClick={() => handleSectionChange("scheduledExams")}>
               Scheduled Exams
             </li>
-            <li onClick={() => handleSectionChange("grades")}>Grades</li>
+            <li onClick={() => handleSectionChange("grades")}>Your Grades</li>
           </ul>
         </div>
 
@@ -344,27 +389,28 @@ const UserHome = ({ userRole }) => {
             </div>
           )}
           {activeSection === "grades" && (
-  <div className="section-container">
-    <div className="items-container">
-      {grades.map((grade, index) => (
-        <div className="item" key={index}>
-          <h4>Username: {grade.username}</h4>
-          <h4>Student Number: {formatStudentNumber(grade.studentnumber)}</h4>
-          <div className="grade-container">
-            {grade.subjects.map((subject, subIndex) => (
-              <div className="grade" key={subIndex}>
-                <h4>
-                  {subject.subjectname} - {subject.grade}
-                </h4>
+            <div className="section-container">
+              <div className="items-container">
+                {grades.map((grade, index) => (
+                  <div className="item" key={index}>
+                    <h4>Username: {grade.username}</h4>
+                    <h4>
+                      Student Number: {formatStudentNumber(grade.studentnumber)}
+                    </h4>
+                    <div className="grade-container">
+                      {grade.subjects.map((subject, subIndex) => (
+                        <div className="grade" key={subIndex}>
+                          <h4>
+                            {subject.subjectname} - {subject.grade}
+                          </h4>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
-      ))}
-    </div>
-  </div>
-)}
-
+            </div>
+          )}
         </div>
       </div>
 

@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import "../styles/addModal.css";
 import axios from "axios";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import toast, { Toaster } from "react-hot-toast";
 
 const AddAnnouncementModal = ({ show, onClose }) => {
   const [description, setDescription] = useState("");
@@ -36,15 +35,35 @@ const AddAnnouncementModal = ({ show, onClose }) => {
       );
 
       if (response && response.data.success) {
-        toast.success("Successfully created an Announcement!");
-        setTimeout(() => {
-        }, 2000);
+        toast.success("successfully  created", {
+          icon: "👏",
+          style: {
+            border: "1px solid #4caf50",
+            padding: "16px",
+            color: "#4caf50",
+          },
+        });
+        setTimeout(() => {}, 2000);
       } else {
-        toast.error(response.data.message || "Something went wrong");
+        toast.error("Something went wrong.", {
+          icon: "❌",
+          style: {
+            border: "1px solid #ff4d4f",
+            padding: "16px",
+            color: "#ff4d4f",
+          },
+        });
       }
     } catch (error) {
       console.error(error);
-      toast.error("Something went wrong");
+      toast.error("Something went wrong.", {
+        icon: "❌",
+        style: {
+          border: "1px solid #ff4d4f",
+          padding: "16px",
+          color: "#ff4d4f",
+        },
+      });
     }
   };
   if (!show) {
@@ -52,6 +71,7 @@ const AddAnnouncementModal = ({ show, onClose }) => {
   }
   return (
     <div className="add-modal">
+      <Toaster position="top-right" />
       <form className="add-form" onSubmit={handleSubmit}>
         <div className="form-close-btn" onClick={onClose}>
           &times;

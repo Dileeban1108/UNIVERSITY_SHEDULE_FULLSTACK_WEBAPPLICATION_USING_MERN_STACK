@@ -11,8 +11,7 @@ const Footer = () => {
         <div className="footer__section">
           <h5 className="footer__heading"> Join Us Today</h5>
           <p>
-            Empower minds and embrace new learning opportunities with [Website
-            Name]. Join us in shaping the future of education!
+            Empower minds and embrace new learning opportunities with Uni Mgt System. Join us in shaping the future of education!
           </p>
         </div>
         <div className="container_1">

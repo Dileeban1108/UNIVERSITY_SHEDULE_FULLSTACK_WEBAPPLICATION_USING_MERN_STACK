@@ -22,7 +22,7 @@ const appealSchema = new Schema(
         type: String,
         required: true,
     },
-    description: {
+    appealdes: {
         type: String,
         required: true,
     },

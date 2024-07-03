@@ -360,22 +360,21 @@ const getAnnouncements = async (req, res) => {
 };
 const deleteAnnouncement = async (req, res) => {
   try {
-    const { index } = req.body;
+    const { id } = req.params;
 
-    const query = { index };
-
-    const deleteByIndex = await Announcement.findOneAndDelete(query);
+    const deleteByIndex = await Announcement.findByIdAndDelete(id);
 
     if (!deleteByIndex) {
-      return res.status(404).json({ error: " not found" });
+      return res.status(404).json({ error: "Announcement not found" });
     }
 
-    res.status(200).json({ message: "deleted successfully" });
+    res.status(200).json({ message: "Announcement deleted successfully" });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Failed to delete" });
+    console.error("Failed to delete announcement:", error);
+    res.status(500).json({ error: "Failed to delete announcement" });
   }
 };
+
 module.exports = {
   handleLogin,
   updateUser,

@@ -82,6 +82,9 @@
   align-items: center;
   border-radius: 5px;
 }
+.loginBtn:hover{
+  background-color: #0054c1;
+}
 .home{
   background-color: #a1a3a668;
   color: #2e2d2d;
@@ -91,4 +94,8 @@
   align-items: center;
   border-radius: 5px;
   width: 70px;
+}
+.home:hover{
+  background-color: #16161668;
+  color: #ffffff;
 }

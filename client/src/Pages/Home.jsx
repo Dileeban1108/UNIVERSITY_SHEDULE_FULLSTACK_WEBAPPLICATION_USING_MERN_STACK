@@ -41,28 +41,60 @@ const Home = () => {
         const userinfo = JSON.parse(localStorage.getItem("userinfo"));
         if (userinfo && userinfo.email) {
           const email = userinfo.email;
+          let response = await axios.get(
+            `http://localhost:3001/lecture/getWelfare/${email}`
+          );
+          if (response.data) {
+            setUserRole("welfare");
+            console.log("welfare");
+            setUserDetails(response.data);
+          } else {
+            console.error("User role not found for the given email");
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch user details", error);
+      }
+    };
 
-          let response = await axios.get(`http://localhost:3001/auth/getUser/${email}`);
+    fetchUserDetails();
+  }, []);
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        const userinfo = JSON.parse(localStorage.getItem("userinfo"));
+        if (userinfo && userinfo.email) {
+          const email = userinfo.email;
+          let response = await axios.get(
+            `http://localhost:3001/auth/getUser/${email}`
+          );
           if (response.data) {
             setUserRole("user");
             console.log("user");
             setUserDetails(response.data);
-          } else {
-            response = await axios.get(`http://localhost:3001/lecture/getLecturers/${email}`);
-            if (response.data) {
-              setUserRole("lecturer");
-              console.log("lecturer");
-              setUserDetails(response.data);
-            } else {
-              response = await axios.get(`http://localhost:3001/lecture/getWelfare/${email}`);
-              if (response.data) {
-                setUserRole("welfare");
-                console.log("welfare");
-                setUserDetails(response.data);
-              } else {
-                console.error("User role not found for the given email");
-              }
-            }
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch user details", error);
+      }
+    };
+
+    fetchUserDetails();
+  }, []);
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        const userinfo = JSON.parse(localStorage.getItem("userinfo"));
+        if (userinfo && userinfo.email) {
+          const email = userinfo.email;
+
+          let response = await axios.get(
+            `http://localhost:3001/lecture/getLecturers/${email}`
+          );
+          if (response.data) {
+            setUserRole("lecturer");
+            console.log("lecturer");
+            setUserDetails(response.data);
           }
         }
       } catch (error) {
@@ -88,7 +120,7 @@ const Home = () => {
         {userRole === "user" && <UserHome />}
         {userRole === "welfare" && <StudentWelfareHome />}
         {!userRole && <DashBoard id="main" />}
-        <UniversitiesPage id="universities"/>
+        <UniversitiesPage id="universities" />
         <Services id="services" />
         <Announcement userRole={userRole} id="announcement" />
         <AboutPage id="aboutus" />

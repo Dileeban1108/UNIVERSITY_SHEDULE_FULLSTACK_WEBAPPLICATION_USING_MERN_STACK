@@ -138,9 +138,23 @@ const LectureHome = ({ userRole }) => {
         department: "",
       });
       setAddCourseFormOpen(false);
-      toast.success("course added successfully");
+      toast.success("Course added successfully", {
+        icon: "👏",
+        style: {
+          border: "1px solid #4caf50",
+          padding: "16px",
+          color: "#4caf50",
+        },
+      });
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error("Something went wrong.", {
+        icon: "❌",
+        style: {
+          border: "1px solid #ff4d4f",
+          padding: "16px",
+          color: "#ff4d4f",
+        },
+      });
     }
   };
 
@@ -162,9 +176,23 @@ const LectureHome = ({ userRole }) => {
         faculty: "",
       });
       setAddAssignmentFormOpen(false);
-      toast.success("assignment added successfully");
+      toast.success("Assignment added successfully", {
+        icon: "👏",
+        style: {
+          border: "1px solid #4caf50",
+          padding: "16px",
+          color: "#4caf50",
+        },
+      });
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error("Something went wrong.", {
+        icon: "❌",
+        style: {
+          border: "1px solid #ff4d4f",
+          padding: "16px",
+          color: "#ff4d4f",
+        },
+      });
     }
   };
 
@@ -185,9 +213,23 @@ const LectureHome = ({ userRole }) => {
         faculty: "",
       });
       setExamScheduleFormOpen(false);
-      toast.success("exam sheduled successfully");
+      toast.success("exam sheduled successfully", {
+        icon: "👏",
+        style: {
+          border: "1px solid #4caf50",
+          padding: "16px",
+          color: "#4caf50",
+        },
+      });
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error("Something went wrong.", {
+        icon: "❌",
+        style: {
+          border: "1px solid #ff4d4f",
+          padding: "16px",
+          color: "#ff4d4f",
+        },
+      });
     }
   };
 
@@ -215,9 +257,23 @@ const LectureHome = ({ userRole }) => {
         newGrade
       );
       toggleGradeForm();
-      toast.success("grade added successfully");
+      toast.success("grade added successfully", {
+        icon: "👏",
+        style: {
+          border: "1px solid #4caf50",
+          padding: "16px",
+          color: "#4caf50",
+        },
+      });
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error("Something went wrong.", {
+        icon: "❌",
+        style: {
+          border: "1px solid #ff4d4f",
+          padding: "16px",
+          color: "#ff4d4f",
+        },
+      });
     }
   };
 

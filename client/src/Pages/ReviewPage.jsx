@@ -4,7 +4,7 @@ import "../styles/review.css";
 import userImage from "../assets/user.jpg"; // Correctly import the image
 import toast from "react-hot-toast";
 import { Toaster } from "react-hot-toast";
-const ReviewPage = ({userDetails}) => {
+const ReviewPage = ({ userDetails }) => {
   const [reviews, setReviews] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [review, setReview] = useState("");
@@ -23,7 +23,6 @@ const ReviewPage = ({userDetails}) => {
 
     fetchReviews();
   }, []);
-
 
   const handleNextPage = () => {
     setCurrentPage((prevPage) =>
@@ -49,15 +48,29 @@ const ReviewPage = ({userDetails}) => {
       setReviews((prevReviews) => [...prevReviews, response.data]);
       setReview(""); // Reset review state
       window.location.reload();
-      toast.success("Successfully added");
+      toast.success("Successfully added", {
+        icon: "👏",
+        style: {
+          border: "1px solid #4caf50",
+          padding: "16px",
+          color: "#4caf50",
+        },
+      });
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error("Something went wrong.", {
+        icon: "❌",
+        style: {
+          border: "1px solid #ff4d4f",
+          padding: "16px",
+          color: "#ff4d4f",
+        },
+      });
     }
   };
 
   return (
     <section className="reviewsx">
-      <Toaster position="top-right"/>
+      <Toaster position="top-right" />
       <div className="textx">
         <h1>Tell Us How To Improve</h1>
       </div>

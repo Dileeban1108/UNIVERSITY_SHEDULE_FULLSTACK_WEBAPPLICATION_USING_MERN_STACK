@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../styles/modal.css";
-import toast from "react-hot-toast";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 const ScholarshipFormModal = ({ onClose }) => {
   const [isOpen, setIsOpen] = useState(true);
   const [selectedScholarship, setSelectedScholarship] = useState("");
   const [scholarships, setScholarships] = useState([]);
   const [formData, setFormData] = useState({
-    name: "",
-    studentNumber: "",
+    username: "",
+    studentnumber: "",
     email: "",
     faculty: "",
     department: "",
     reason: "",
-    scholarship: ""
+    scholarshipname: ""
   });
 
   useEffect(() => {
@@ -37,7 +36,7 @@ const ScholarshipFormModal = ({ onClose }) => {
 
   const handleScholarshipClick = (scholarshipName) => {
     setSelectedScholarship(scholarshipName);
-    setFormData({ ...formData, scholarship: scholarshipName });
+    setFormData({ ...formData, scholarshipname: scholarshipName });
   };
 
   const handleInputChange = (event) => {
@@ -51,9 +50,23 @@ const ScholarshipFormModal = ({ onClose }) => {
       const response = await axios.post(`http://localhost:3001/other/applyScolarship`, formData);
       console.log('Scholarship application submitted successfully', response.data);
       closeModal();
-      toast.success("Successfully logged in");
+      toast.success("Applied successfully", {
+        icon: "👏",
+        style: {
+          border: "1px solid #4caf50",
+          padding: "16px",
+          color: "#4caf50",
+        },
+      });
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error("Something went wrong", {
+        icon: "❌",
+        style: {
+          border: "1px solid #ff4d4f",
+          padding: "16px",
+          color: "#ff4d4f",
+        },
+      });
     }
   };
 
@@ -82,18 +95,18 @@ const ScholarshipFormModal = ({ onClose }) => {
           <form className="formx" onSubmit={handleSubmit}>
             <input
               type="text"
-              name="name"
+              name="username"
               required
               placeholder="Your Name"
-              value={formData.name}
+              value={formData.username}
               onChange={handleInputChange}
             />
             <input
               type="text"
-              name="studentNumber"
+              name="studentnumber"
               required
               placeholder="Student Number"
-              value={formData.studentNumber}
+              value={formData.studentnumber}
               onChange={handleInputChange}
             />
             <input
@@ -122,10 +135,10 @@ const ScholarshipFormModal = ({ onClose }) => {
             />
             <input
               type="text"
-              name="scholarship"
+              name="scholarshipname"
               required
               placeholder="Scholarship Name"
-              value={selectedScholarship}
+              value={formData.scholarshipname}
               readOnly
             />
             <textarea

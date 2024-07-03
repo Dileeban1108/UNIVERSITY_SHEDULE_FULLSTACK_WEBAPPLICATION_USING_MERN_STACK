@@ -23,7 +23,6 @@
   background-attachment:fixed ;
   background-size:cover;
   background-repeat: no-repeat ;
-  border: solid;
 
 }
 
@@ -35,7 +34,7 @@
   align-items: center;
   height: auto;
   margin-top: 60px;
-  padding: 9rem 2rem;
+  padding: 12rem 2rem;
 }
 
 .box_2 {
@@ -87,6 +86,7 @@ font-weight: bold;
 }
 
 .back-to-top {
+  z-index: 3000;
   position: fixed;
   height: 50px;
   width: 100%;
