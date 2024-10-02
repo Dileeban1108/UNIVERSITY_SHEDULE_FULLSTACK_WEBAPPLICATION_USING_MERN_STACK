@@ -10,21 +10,22 @@ import GradeModal from "../components/GradeModal";
 import { FaTrash } from "react-icons/fa"; // Import the delete icon from react-icons
 import toast, { Toaster } from "react-hot-toast";
 
-const LectureHome = ({ userRole }) => {
+const LectureHome = ({userDetails}) => {
   const [activeSection, setActiveSection] = useState("courses");
   const [isProfileModalOpen, setProfileModalOpen] = useState(false);
   const [isAddCourseFormOpen, setAddCourseFormOpen] = useState(false);
   const [isAddAssignmentFormOpen, setAddAssignmentFormOpen] = useState(false);
   const [isExamScheduleFormOpen, setExamScheduleFormOpen] = useState(false);
   const [isGradeFormOpen, setGradeFormOpen] = useState(false);
-  const [userDetails, setUserDetails] = useState({});
   const [courses, setCourses] = useState([]);
   const [students, setStudents] = useState([]);
   const [exams, setExams] = useState([]);
   const [grades, setGrades] = useState([]);
   const [assignments, setAssignments] = useState([]);
   const [isProfileModalOpen_2, setProfileModalOpen_2] = useState(false);
-
+  const [selectedStudent, setSelectedStudent] = useState(null);
+  const [isStudentModalOpen, setStudentModalOpen] = useState(false);
+  
   const toggleProfileModal_2 = () => {
     setProfileModalOpen_2(!isProfileModalOpen_2);
   };
@@ -65,8 +66,7 @@ const LectureHome = ({ userRole }) => {
     department: "",
   });
 
-  const [selectedStudent, setSelectedStudent] = useState(null);
-  const [isStudentModalOpen, setStudentModalOpen] = useState(false);
+
 
   const handleSectionChange = (section) => {
     setActiveSection(section);
@@ -287,21 +287,19 @@ const LectureHome = ({ userRole }) => {
   };
 
   const handleLogOut = () => {
-    localStorage.removeItem("userinfo");
-    userRole = "";
+    localStorage.removeItem("accessToken");
     window.location.reload();
   };
 
   const fetchStudents = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/auth/getUsers/${userDetails.department}`
+        `http://localhost:3001/auth/fetchUsers/${userDetails.department}`
       );
-      console.log("Fetched students:", response.data); // Debugging
       if (Array.isArray(response.data)) {
         setStudents(response.data);
       } else if (response.data) {
-        setStudents([response.data]); // Convert single object to array
+        setStudents([response.data]);
       } else {
         console.error("Unexpected response data:", response.data);
       }
@@ -309,13 +307,20 @@ const LectureHome = ({ userRole }) => {
       console.error("Failed to fetch students", error);
     }
   };
+  
 
   const fetchCourses = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/lecture/getCourse/${userDetails.department}`
+        `http://localhost:3001/lecture/getCourses/${userDetails.department}`
       );
-      setCourses(response.data);
+      if (Array.isArray(response.data)) {
+        setCourses(response.data);
+      } else if (response.data) {
+        setCourses([response.data]); // Convert single object to array
+      } else {
+        console.error("Unexpected response data:", response.data);
+      }
     } catch (error) {
       console.error("Failed to fetch courses", error);
     }
@@ -326,7 +331,13 @@ const LectureHome = ({ userRole }) => {
       const response = await axios.get(
         `http://localhost:3001/lecture/getAssignments/${userDetails.department}`
       );
-      setAssignments(response.data);
+      if (Array.isArray(response.data)) {
+        setAssignments(response.data);
+      } else if (response.data) {
+        setAssignments([response.data]);
+      } else {
+        console.error("Unexpected response data:", response.data);
+      }
     } catch (error) {
       console.error("Failed to fetch assignments", error);
     }
@@ -335,16 +346,21 @@ const LectureHome = ({ userRole }) => {
   const fetchExams = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/lecture/getExams/${userDetails.department}`
+        `http://localhost:3001/lecture/getSheduledExams/${userDetails.department}`
       );
-      setExams(response.data);
+      if (Array.isArray(response.data)) {
+        setExams(response.data);
+      } else if (response.data) {
+        setExams([response.data]); // Convert single object to array
+      } else {
+        console.error("Unexpected response data:", response.data);
+      }
     } catch (error) {
       console.error("Failed to fetch exams", error);
     }
   };
   const fetchGrades = async () => {
     try {
-      console.log("Fetching grades for department:", userDetails.department); // Debugging
       const response = await axios.get(
         `http://localhost:3001/lecture/getGrades/${userDetails.department}`
       );
@@ -374,26 +390,7 @@ const LectureHome = ({ userRole }) => {
     }
   };
 
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
-        const userinfo = JSON.parse(localStorage.getItem("userinfo"));
-        const email = userinfo?.email;
-        if (email) {
-          const response = await axios.get(
-            `http://localhost:3001/lecture/getLecturers/${email}`
-          );
-          setUserDetails(response.data);
-        } else {
-          console.log("No email found in localStorage.");
-        }
-      } catch (error) {
-        console.error("Failed to fetch user details", error);
-      }
-    };
 
-    fetchUserDetails();
-  }, []);
 
   useEffect(() => {
     if (userDetails.department) {

@@ -13,12 +13,17 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:3001/auth/login", {
+      // Capture the response from the login request
+      const response = await axios.post("http://localhost:3001/auth/login", {
         email,
         password,
       });
-      localStorage.setItem("userinfo", JSON.stringify({ email: email }));
-      toast.success("successfully logged in", {
+
+      // Store the access token in local storage
+      const { accessToken } = response.data;
+
+      // Show success notification
+      toast.success("Successfully logged in", {
         icon: "👏",
         style: {
           border: "1px solid #4caf50",
@@ -26,9 +31,11 @@ const Login = () => {
           color: "#4caf50",
         },
       });
+
+      localStorage.setItem("accessToken", accessToken);
       navigate("/");
     } catch (error) {
-      toast.error("Log in  failed. Please try again.", {
+      toast.error("Log in failed. Please try again.", {
         icon: "❌",
         style: {
           border: "1px solid #ff4d4f",

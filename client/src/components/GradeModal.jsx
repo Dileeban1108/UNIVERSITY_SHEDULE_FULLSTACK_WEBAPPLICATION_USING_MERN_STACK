@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import "../styles/addModal.css";
+import { jwtDecode } from "jwt-decode";
 
 const GradeModal = ({
   isOpen,
@@ -19,9 +20,9 @@ const GradeModal = ({
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const userinfo = JSON.parse(localStorage.getItem("userinfo"));
-        if (userinfo && userinfo.email) {
-          const email = userinfo.email;
+        const accessToken = localStorage.getItem("accessToken");
+        const decoded = jwtDecode(accessToken); // Use jwtDecode correctly
+        const email = decoded?.userInfo?.email;
           let response = await axios.get(
             `http://localhost:3001/auth/getUser/${email}`
           );
@@ -41,7 +42,7 @@ const GradeModal = ({
               }
             }
           }
-        }
+        
       } catch (error) {
         console.error("Failed to fetch user details", error);
       }
@@ -86,7 +87,6 @@ const GradeModal = ({
 
   if (!isOpen) return null;
   const formatStudentNumber = (studentnumber) => {
-    // Assuming the format is SE2020027 and we want to convert it to SE/2020/027
     if (studentnumber.length !== 9) return studentnumber; // Ensure valid length before formatting
     return `${studentnumber.slice(0, 2)}/${studentnumber.slice(2, 6)}/${studentnumber.slice(6)}`;
   };

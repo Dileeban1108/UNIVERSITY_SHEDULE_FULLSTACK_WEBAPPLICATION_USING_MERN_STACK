@@ -49,7 +49,7 @@ const getStudentGrade = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch student grades" });
   }
 };
-const getStudentGradeByDepartment = async (req, res) => {
+const getStudentGradesByDepartment = async (req, res) => {
   try {
     const { department } = req.params;
     const additionalFilters = req.query; // Using query parameters for filters
@@ -156,7 +156,7 @@ const deleteAdvancedCourse = async (req, res) => {
   };
   
 
-const getLecturer = async (req, res) => {
+const getLecturers= async (req, res) => {
   try {
     const { department } = req.params; 
     const additionalFilters = req.body; 
@@ -165,7 +165,7 @@ const getLecturer = async (req, res) => {
     const query = { department, ...additionalFilters };
 
     // Fetch the lecturer matching the query
-    const result = await Lecturer.findOne(query);
+    const result = await Lecturer.find(query);
 
     // Send the result back to the client
     res.status(200).json(result);
@@ -409,7 +409,7 @@ const handleNewExam = async (req, res) => {
       .json({ error: "An error occurred" });
   }
 };
-const getAssignment = async (req, res) => {
+const getAssignments = async (req, res) => {
   try {
     const { department } = req.params;
     const additionalFilters = req.body;
@@ -418,7 +418,7 @@ const getAssignment = async (req, res) => {
     const query = { department, ...additionalFilters };
 
     // Fetch the lecturer matching the query
-    const result = await Assignment.findOne(query);
+    const result = await Assignment.find(query);
 
     // Send the result back to the client
     res.status(200).json(result);
@@ -435,8 +435,7 @@ const getExams = async (req, res) => {
 
     const query = { department, ...additionalFilters };
 
-    const result = await Exam.findOne(query);
-console.log(result)
+    const result = await Exam.find(query);
     res.status(200).json(result);
   } catch (error) {
     console.error(error);
@@ -495,11 +494,11 @@ const getEnrolledCourses = async (req, res) => {
 };
 
 module.exports = {
-  getLecturer,
+  getLecturers,
   handleNewCourse,
   getCourses,
   handleNewAssignment,
-  getAssignment,
+  getAssignments,
   handleNewEnrolledCourse,
   getEnrolledCourses,
   createGrade,
@@ -510,7 +509,7 @@ module.exports = {
   handleNewExam,
   getExams,
   removeEnrolledCourse,
-  getStudentGradeByDepartment,
+  getStudentGradesByDepartment,
   getStudentWelfareByEmail,
   handleNewAdvancedCourse,
   handleNewScholarship,

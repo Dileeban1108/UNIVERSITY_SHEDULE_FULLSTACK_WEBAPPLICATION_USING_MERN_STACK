@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../styles/profileModal.css";
 import toast, { Toaster } from "react-hot-toast";
+import { jwtDecode } from "jwt-decode";
 
 const LectureProfileModal = ({ isOpen, onClose }) => {
   const [userDetails, setUserDetails] = useState({
@@ -10,7 +11,7 @@ const LectureProfileModal = ({ isOpen, onClose }) => {
     phone: "",
     university: "",
     address: "",
-    position: ""
+    position: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -20,15 +21,19 @@ const LectureProfileModal = ({ isOpen, onClose }) => {
       const fetchUserDetails = async () => {
         setLoading(true);
         try {
-          const userinfo = JSON.parse(localStorage.getItem("userinfo"));
-          if (userinfo && userinfo.email) {
-            const email = userinfo.email;
-            const response = await axios.get(
-              `http://localhost:3001/lecture/getWelfare/${email}`
-            );
-            if (response.data) {
-              setUserDetails(response.data);
+          const accessToken = localStorage.getItem("accessToken");
+          const decoded = jwtDecode(accessToken); // Use jwtDecode correctly
+          const email = decoded?.userInfo?.email;
+          let response = await axios.get(
+            `http://localhost:3001/lecture/getWelfare/${email}`, // Use email in the URL
+            {
+              headers: {
+                Authorization: `Bearer ${accessToken}`, // Include the access token
+              },
             }
+          );
+          if (response.data) {
+            setUserDetails(response.data);
           }
         } catch (error) {
           console.error("Failed to fetch user details", error);
@@ -48,7 +53,7 @@ const LectureProfileModal = ({ isOpen, onClose }) => {
       [name]: value,
     }));
   };
-  
+
   const handleUpdateProfile = async () => {
     try {
       const response = await axios.put(
