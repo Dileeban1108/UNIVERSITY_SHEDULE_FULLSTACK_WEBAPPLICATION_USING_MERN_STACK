@@ -237,6 +237,9 @@ font-size: 1rem;
   transition: all 0.3s ease-in-out;
   font-weight: 2rem;
 }
+.unandemail{
+  width: 80%;
+}
 .student:hover{
   background-color: rgb(234, 179, 112);
 }
@@ -287,26 +290,21 @@ box-shadow: 0 0 3px #007afd;
   border-radius: 5px;
 border-bottom: .1px solid #007afd;
 }
-.itemx{
-  height: 130px;
+.itemx {
+  height: 140px;
   width: 80%;
   background-color: bisque;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  color: #007afd;
-  display: flex;
   justify-content: space-around;
-  align-items: center;
+  color: #007afd;
+  padding: 5px;
+
 }
-.itemx:hover{
-  .delete-icon{
-    display: block;
-  }
-  background-color: rgb(166, 164, 164);
-}
+
+
 .btn-container{
   display: flex;
   justify-content: space-between;
@@ -325,22 +323,56 @@ padding: .5rem;
 border-radius: 5px;
 border: none;
 }
-.grade-container{
-  width: 50%;
-  height: 50px;
+.beefore{
+  width: 95%;
+  display: flex;
+  flex-direction: column;
+  height: 30%;
+}
+.beefore h4{
+  font-size: 15px;
+}
+.grade-container {
+  width: 95%;
   overflow-y: auto;
-  padding: .5rem;
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  height: 150px;
+  border: 1px solid #ccc;
+  padding: 7px;
+  overflow-y: scroll;
+}
+
+.grade {
+  border: 0.5px solid burlywood;
+  width: 100%;
+  height: 30px; 
+  flex: 0 0 20px;
+  font-size: large;
+  overflow-y: hidden;
+}
+
+
+.nameUser{
+  width: 100%;
+  padding-right: 50px;
 }
 .delete-icon{
-  position: relative;
   background: none;
   border: none;
   cursor: pointer;
   font-size: 1.5em;
   color: red; 
   overflow: hidden;
-  display: none;
+  width: 50px;
+  border: none;
+}
+.nameWithIcon{
+  display: flex;
   width: 100%;
+  padding: 5px;
+  justify-content: space-around;
 }
 @media screen and (max-width: 900px) {
   .sidebar {

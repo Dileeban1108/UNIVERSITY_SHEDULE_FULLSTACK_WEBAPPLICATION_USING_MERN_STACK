@@ -21,19 +21,29 @@ const GradeModal = ({
     const fetchUserDetails = async () => {
       try {
         const accessToken = localStorage.getItem("accessToken");
-        const decoded = jwtDecode(accessToken); // Use jwtDecode correctly
+        const decoded = jwtDecode(accessToken);
         const email = decoded?.userInfo?.email;
-          let response = await axios.get(
-            `http://localhost:3001/auth/getUser/${email}`
-          );
+        let response = await axios.get(
+          `http://localhost:3001/auth/getUser/${email}`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`, // Include the access token
+            },
+          }
+        );
           if (response.data) {
             setUserDetails(response.data);
             if (onDepartmentChange) {
               onDepartmentChange(response.data.department);
             }
           } else {
-            response = await axios.get(
-              `http://localhost:3001/lecture/getLecturers/${email}`
+            let response = await axios.get(
+              `http://localhost:3001/lecture/getLecturer/${email}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${accessToken}`, // Include the access token
+                },
+              }
             );
             if (response.data) {
               setUserDetails(response.data);
@@ -60,12 +70,12 @@ const GradeModal = ({
   const fetchStudents = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/auth/getUsers/${userDetails.department}`
+        `http://localhost:3001/auth/fetchUsers/${userDetails.department}`
       );
       if (Array.isArray(response.data)) {
         setStudents(response.data);
       } else if (response.data) {
-        setStudents([response.data]); // Convert single object to array
+        setStudents([response.data]);
       } else {
         console.error("Unexpected response data:", response.data);
       }

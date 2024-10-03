@@ -9,6 +9,8 @@ const Exam=require("../models/Exam")
 const AdvancedCourse=require("../models/AdvancedCourse")
 const Club=require("../models/Clubs")
 const Scholarship=require("../models/Scholarship")
+const User = require("../models/User");
+
 const createGrade = async (req, res) => {
   const { studentnumber,username, subjects,department } = req.body;
 
@@ -90,8 +92,8 @@ const updateStudentGrade = async (req, res) => {
 
 const deleteStudentGrade = async (req, res) => {
   try {
-    const { studentnumber } = req.params;
-    const deletedGrade = await Grade.findOneAndDelete(studentnumber);
+    const { id } = req.params;
+    const deletedGrade = await Grade.findByIdAndDelete(id);
     if (!deletedGrade) {
       return res.status(404).json({ error: "Grade not found" });
     }
@@ -99,6 +101,58 @@ const deleteStudentGrade = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Failed to delete student grade" });
+  }
+}
+const handleDeleteStudent = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedStudent = await User.findByIdAndDelete(id);
+    if (!deletedStudent) {
+      return res.status(404).json({ error: "not found" });
+    }
+    res.status(200).json({ message: "deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to delete" });
+  }
+}
+const handleDeleteAssignment = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedAssignment = await Assignment.findByIdAndDelete(id);
+    if (!deletedAssignment) {
+      return res.status(404).json({ error: "not found" });
+    }
+    res.status(200).json({ message: "deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to delete" });
+  }
+}
+const handleDeleteExam = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deleteExam = await Exam.findByIdAndDelete(id);
+    if (!deleteExam) {
+      return res.status(404).json({ error: "not found" });
+    }
+    res.status(200).json({ message: "deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to delete" });
+  }
+}
+const handleDeleteCourse = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deleteCourse = await Course.findByIdAndDelete(id);
+    if (!deleteCourse) {
+      return res.status(404).json({ error: "not found" });
+    }
+    res.status(200).json({ message: "deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to delete" });
   }
 }
 const deleteScholarship = async (req, res) => {
@@ -517,5 +571,9 @@ module.exports = {
   deleteScholarship,
   deleteClub,
   deleteAdvancedCourse,
-  handleNewAnnouncement
+  handleNewAnnouncement,
+  handleDeleteStudent,
+  handleDeleteAssignment,
+  handleDeleteCourse,
+  handleDeleteExam
 };
