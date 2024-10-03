@@ -8,8 +8,9 @@ import AddAnnouncementModal from "../components/AddAnnouncementModal";
 import ProfileModal from "../components/WelfareProfileModal";
 import StudentDetailsModal from "../components/StudentDetailsModal";
 import toast, { Toaster } from "react-hot-toast";
+import { jwtDecode } from "jwt-decode";
 
-const StudentWelfareHome = ({ userRole }) => {
+const StudentWelfareHome = ({ userRole,userDetails }) => {
   const [activeSection, setActiveSection] = useState("advancedcourses");
   const [isProfileModalOpen, setProfileModalOpen] = useState(false);
   const [isProfileModalOpen_2, setProfileModalOpen_2] = useState(false);
@@ -17,7 +18,6 @@ const StudentWelfareHome = ({ userRole }) => {
     useState(false);
   const [isAddClubFormOpen, setAddClubFormOpen] = useState(false);
   const [isAddScholarshipFormOpen, setAddScholarshipFormOpen] = useState(false);
-  const [userDetails, setUserDetails] = useState({});
   const [advancedCourses, setAdvancedCourses] = useState([]);
   const [clubs, setClubs] = useState([]);
   const [scholarships, setScholarships] = useState([]);
@@ -174,7 +174,7 @@ const StudentWelfareHome = ({ userRole }) => {
   };
 
   const handleLogOut = () => {
-    localStorage.removeItem("userinfo");
+    localStorage.removeItem("accessToken");
     window.location.reload();
   };
 
@@ -250,28 +250,10 @@ const StudentWelfareHome = ({ userRole }) => {
   };
 
   useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
-        const userinfo = JSON.parse(localStorage.getItem("userinfo"));
-        const email = userinfo?.email;
-        if (email) {
-          const response = await axios.get(
-            `http://localhost:3001/lecture/getWelfare/${email}`
-          );
-          setUserDetails(response.data);
-        } else {
-          console.log("No email found in localStorage.");
-        }
-      } catch (error) {
-        console.error("Failed to fetch user details", error);
-      }
-    };
-    
     fetchAppliedClubs();
     fetchAppeals();
     fetchAppliedAdvancedCourses();
     fetchAppliedScholarships();
-    fetchUserDetails();
     fetchCourses();
     fetchClubs();
     fetchScholarships();
@@ -310,7 +292,6 @@ const StudentWelfareHome = ({ userRole }) => {
         `http://localhost:3001/lecture/deleteClub/${name}`
       );
       if (response.status === 200) {
-        console.log(" deleted successfully");
         setClubs(clubs.filter((club) => club.name !== name));
         toast.success("successfully deleted");
       } else {

@@ -19,7 +19,7 @@ const Register = () => {
 
   const facultyOptions = ["Science", "Engineering", "Arts", "Business"];
   const departmentOptions = {
-    Science: ["Biology", "Chemistry", "Physics"],
+    Science: ["Biology", "Chemistry", "Physics", "software engineering"],
     Engineering: [
       "Computer Science",
       "Mechanical Engineering",

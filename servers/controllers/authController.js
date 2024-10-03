@@ -6,6 +6,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Review = require("../models/Review");
 const Announcement = require("../models/Announcement");
+const { generateAccessToken, generateRefreshToken } = require("../../servers/utills/generateTokens");
 
 const handleLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -35,46 +36,71 @@ const handleLogin = async (req, res) => {
   }
 
   const matchPassword = await bcrypt.compare(password, foundUser.password);
-
   if (matchPassword) {
-    // Generate access token and refresh token
-    const accessToken = jwt.sign(
-      {
-        userInfo: { username: foundUser.username },
-        issuedAt: Date.now(),
-      },
-      process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "20s" }
-    );
+    // Generate tokens
+    const accessToken = generateAccessToken(foundUser);
+    const refreshToken = generateRefreshToken(foundUser);
 
-    const refreshToken = jwt.sign(
-      { username: foundUser.username },
-      process.env.REFRESH_TOKEN_SECRET,
-      { expiresIn: "1d" }
-    );
-
-    // Save refresh token with current user
+    // Save refresh token in the database
     foundUser.refreshToken = refreshToken;
-    const result = await foundUser.save();
-    console.log(result);
+    await foundUser.save();
 
-    // Set refresh token as an HTTP-only cookie
+    // Set refresh token as an HTTP-only secure cookie
     res.cookie("jwt", refreshToken, {
       httpOnly: true,
-      sameSite: "None",
       secure: true,
-      maxAge: 24 * 60 * 60 * 1000,
+      sameSite: "None",
+      maxAge: 24 * 60 * 60 * 1000, // 1 day expiration
     });
 
     // Send access token to client
     res.json({ accessToken });
   } else {
-    res.status(401).json({ message: "Unauthorized" }); // Password doesn't match
+    res.status(401).json({ message: "Unauthorized" });
   }
 };
+const handleRefreshToken = async (req, res) => {
+  const cookies = req.cookies;
 
+  if (!cookies?.jwt) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
 
-const getUser = async (req, res) => {
+  const refreshToken = cookies.jwt;
+
+  // Check if refresh token exists in the database
+  const foundUser = await User.findOne({ refreshToken }).exec();
+  if (!foundUser) {
+    return res.status(403).json({ message: "Forbidden" });
+  }
+
+  // Verify refresh token
+  jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, async (err, decoded) => {
+    if (err || foundUser.email.toString() !== decoded.email) {
+      // If there is an error or the user ID in the token doesn't match the found user's ID
+      return res.status(403).json({ message: "Forbidden" });
+    }
+  
+    // Proceed to generate new access and refresh tokens
+    const newRefreshToken = generateRefreshToken(foundUser);
+    foundUser.refreshToken = newRefreshToken;
+    await foundUser.save();
+  
+    // Set the new refresh token in the cookie
+    res.cookie("jwt", newRefreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+      maxAge: 24 * 60 * 60 * 1000
+    });
+  
+    // Generate a new access token and send it back
+    const newAccessToken = generateAccessToken(foundUser);
+    res.json({ accessToken: newAccessToken });
+  });
+  
+};
+const getUsers = async (req, res) => {
   try {
     const users = await User.find();
     res.status(200).json(users);
@@ -97,14 +123,13 @@ const getUserByEmail = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch" });
   }
 };
-const getUserByDepartment = async (req, res) => {
+const getUsersByDepartment = async (req, res) => {
   try {
     const { department } = req.params;
     const additionalFilters = req.body;
 
     const query = { department, ...additionalFilters };
 
-    // Use find() to get all matching documents
     const result = await User.find(query);
     res.status(200).json(result);
   } catch (error) {
@@ -115,17 +140,25 @@ const getUserByDepartment = async (req, res) => {
 
 const updateUser = async (req, res) => {
   try {
-    let { username,studentnumber, email,password, phone, faculty, department } = req.body;
+    let {
+      username,
+      studentnumber,
+      email,
+      password,
+      phone,
+      faculty,
+      department,
+    } = req.body;
 
     const updatedUser = await User.findOneAndUpdate(
       { email: email },
       {
         username: username,
-        studentnumber:studentnumber,
-        password:password,
+        studentnumber: studentnumber,
+        password: password,
         phone: phone,
         faculty: faculty,
-        department:department,
+        department: department,
       },
       { new: true }
     );
@@ -146,18 +179,27 @@ const updateUser = async (req, res) => {
 };
 const updateLecturer = async (req, res) => {
   try {
-    let { username, email, phone, faculty, department,position,university,address } = req.body;
+    let {
+      username,
+      email,
+      phone,
+      faculty,
+      department,
+      position,
+      university,
+      address,
+    } = req.body;
 
     const updatedLecturer = await Lecturer.findOneAndUpdate(
       { email: email },
       {
-        address:address,
+        address: address,
         username: username,
         phone: phone,
         faculty: faculty,
-        department:department,
-        position:position,
-        university:university,
+        department: department,
+        position: position,
+        university: university,
       },
       { new: true }
     );
@@ -178,16 +220,16 @@ const updateLecturer = async (req, res) => {
 };
 const updateStudentWelfare = async (req, res) => {
   try {
-    let { username, email, phone,position,university,address } = req.body;
+    let { username, email, phone, position, university, address } = req.body;
 
     const updatedWelfare = await StudentWelfare.findOneAndUpdate(
       { email: email },
       {
-        address:address,
+        address: address,
         username: username,
         phone: phone,
-        position:position,
-        university:university,
+        position: position,
+        university: university,
       },
       { new: true }
     );
@@ -327,7 +369,7 @@ const createReview = async (req, res) => {
 };
 const handleNewAnnouncement = async (req, res) => {
   const { description, image } = req.body;
-  if (!description || !image ) {
+  if (!description || !image) {
     return res.status(400).json({ message: "something is required" });
   }
 
@@ -337,7 +379,6 @@ const handleNewAnnouncement = async (req, res) => {
   }
 
   try {
-
     await Announcement.create({
       image,
       description,
@@ -382,9 +423,9 @@ module.exports = {
   getSchedule,
   deleteLecture,
   updatedLecture,
-  getUser,
+  getUsers,
   getUserByEmail,
-  getUserByDepartment,
+  getUsersByDepartment,
   updateLecturer,
   createReview,
   getReviews,
@@ -392,4 +433,5 @@ module.exports = {
   getAnnouncements,
   handleNewAnnouncement,
   updateStudentWelfare,
+  handleRefreshToken,
 };

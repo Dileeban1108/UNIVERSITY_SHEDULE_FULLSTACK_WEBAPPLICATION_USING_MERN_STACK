@@ -13,6 +13,7 @@ import StudentWelfareHome from "./StudentWelfareHome";
 import DashBoard from "./DashBoard";
 import { BiUpArrow } from "react-icons/bi"; // Import the icon
 import Announcement from "./Announcement";
+import { jwtDecode } from "jwt-decode";
 
 const Home = () => {
   const [userRole, setUserRole] = useState(null);
@@ -38,19 +39,53 @@ const Home = () => {
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const userinfo = JSON.parse(localStorage.getItem("userinfo"));
-        if (userinfo && userinfo.email) {
-          const email = userinfo.email;
-          let response = await axios.get(
-            `http://localhost:3001/lecture/getWelfare/${email}`
-          );
-          if (response.data) {
-            setUserRole("welfare");
-            console.log("welfare");
-            setUserDetails(response.data);
-          } else {
-            console.error("User role not found for the given email");
+        // Retrieve the access token from local storage
+        const accessToken = localStorage.getItem("accessToken");
+        const decoded = jwtDecode(accessToken); // Use jwtDecode correctly
+        const email = decoded?.userInfo?.email; // Correctly access the email
+        let response = await axios.get(
+          `http://localhost:3001/lecture/getWelfare/${email}`, // Use email in the URL
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`, // Include the access token
+            },
           }
+        );
+
+        if (response.data) {
+          setUserRole("welfare");
+          console.log("welfare");
+          setUserDetails(response.data);
+        } else {
+          console.error("User role not found for the given email");
+        }
+      } catch (error) {
+        console.error("Failed to fetch user details", error);
+      }
+    };
+
+    fetchUserDetails();
+  }, []); // Ensure the dependency array is correct
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        // Retrieve the access token from local storage
+        const accessToken = localStorage.getItem("accessToken");
+        // Verify the token and get user info (like email) if not stored
+        const decoded = jwtDecode(accessToken); // Use a library like jwt-decode to get user details from the token
+        const email = decoded?.userInfo?.email; // Correctly access the email
+        let response = await axios.get(
+          `http://localhost:3001/auth/getUser/${email}`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`, // Include the access token
+            },
+          }
+        );
+        if (response.data) {
+          setUserRole("user");
+          console.log("user");
+          setUserDetails(response.data);
         }
       } catch (error) {
         console.error("Failed to fetch user details", error);
@@ -62,40 +97,22 @@ const Home = () => {
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const userinfo = JSON.parse(localStorage.getItem("userinfo"));
-        if (userinfo && userinfo.email) {
-          const email = userinfo.email;
-          let response = await axios.get(
-            `http://localhost:3001/auth/getUser/${email}`
-          );
-          if (response.data) {
-            setUserRole("user");
-            console.log("user");
-            setUserDetails(response.data);
+        // Retrieve the access token from local storage
+        const accessToken = localStorage.getItem("accessToken");
+        const decoded = jwtDecode(accessToken); // Use a library like jwt-decode to get user details from the token
+        const email = decoded?.userInfo?.email; // Correctly access the email
+        let response = await axios.get(
+          `http://localhost:3001/lecture/getLecturer/${email}`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`, // Include the access token
+            },
           }
-        }
-      } catch (error) {
-        console.error("Failed to fetch user details", error);
-      }
-    };
-
-    fetchUserDetails();
-  }, []);
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
-        const userinfo = JSON.parse(localStorage.getItem("userinfo"));
-        if (userinfo && userinfo.email) {
-          const email = userinfo.email;
-
-          let response = await axios.get(
-            `http://localhost:3001/lecture/getLecturers/${email}`
-          );
-          if (response.data) {
-            setUserRole("lecturer");
-            console.log("lecturer");
-            setUserDetails(response.data);
-          }
+        );
+        if (response.data) {
+          setUserRole("lecturer");
+          console.log("lecturer");
+          setUserDetails(response.data);
         }
       } catch (error) {
         console.error("Failed to fetch user details", error);
@@ -116,9 +133,9 @@ const Home = () => {
     <>
       <div className="container">
         <Navbar userRole={userRole} userDetails={userDetails} />
-        {userRole === "lecturer" && <LectureHome />}
-        {userRole === "user" && <UserHome />}
-        {userRole === "welfare" && <StudentWelfareHome />}
+        {userRole === "lecturer" && <LectureHome userDetails={userDetails}/>}
+        {userRole === "user" && <UserHome userDetails={userDetails}/>}
+        {userRole === "welfare" && <StudentWelfareHome userDetails={userDetails}/>}
         {!userRole && <DashBoard id="main" />}
         <UniversitiesPage id="universities" />
         <Services id="services" />

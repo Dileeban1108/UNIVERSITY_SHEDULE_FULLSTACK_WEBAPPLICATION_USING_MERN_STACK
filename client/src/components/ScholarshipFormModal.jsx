@@ -48,7 +48,6 @@ const ScholarshipFormModal = ({ onClose }) => {
     event.preventDefault();
     try {
       const response = await axios.post(`http://localhost:3001/other/applyScolarship`, formData);
-      console.log('Scholarship application submitted successfully', response.data);
       closeModal();
       toast.success("Applied successfully", {
         icon: "👏",

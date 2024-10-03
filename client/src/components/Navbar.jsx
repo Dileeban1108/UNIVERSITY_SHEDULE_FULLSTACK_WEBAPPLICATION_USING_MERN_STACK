@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../styles/navbar.css";
 import { Link as RouterLink } from "react-router-dom";
-import { Link as ScrollLink } from "react-scroll";
+import { jwtDecode } from "jwt-decode";
 
 const NavBar = ({ userRole, userDetails }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -10,8 +10,9 @@ const NavBar = ({ userRole, userDetails }) => {
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const userinfo = JSON.parse(localStorage.getItem("userinfo"));
-        const email = userinfo?.email;
+        const accessToken = localStorage.getItem("accessToken");
+        const decoded = jwtDecode(accessToken); // Use a library like jwt-decode to get user details from the token
+        const email = decoded?.userInfo?.email; // Correctly access the email
         if (email) {
           setIsLoggedIn(true);
         } else {
@@ -31,7 +32,7 @@ const NavBar = ({ userRole, userDetails }) => {
     <nav className="navbar">
       <div className="nav-container">
         <div className="logo">
-          <h1 className="logo-text">Uni Mgt System</h1>
+          <h1 className="logo-text">Uni Pro</h1>
         </div>
         <ul className="nav-links">
           <>

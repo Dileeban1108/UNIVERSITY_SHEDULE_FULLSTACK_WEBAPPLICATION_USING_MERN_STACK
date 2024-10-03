@@ -10,20 +10,21 @@ import GradeModal from "../components/GradeModal";
 import { FaTrash } from "react-icons/fa"; // Import the delete icon from react-icons
 import toast, { Toaster } from "react-hot-toast";
 
-const LectureHome = ({ userRole }) => {
+const LectureHome = ({ userDetails }) => {
   const [activeSection, setActiveSection] = useState("courses");
   const [isProfileModalOpen, setProfileModalOpen] = useState(false);
   const [isAddCourseFormOpen, setAddCourseFormOpen] = useState(false);
   const [isAddAssignmentFormOpen, setAddAssignmentFormOpen] = useState(false);
   const [isExamScheduleFormOpen, setExamScheduleFormOpen] = useState(false);
   const [isGradeFormOpen, setGradeFormOpen] = useState(false);
-  const [userDetails, setUserDetails] = useState({});
   const [courses, setCourses] = useState([]);
   const [students, setStudents] = useState([]);
   const [exams, setExams] = useState([]);
   const [grades, setGrades] = useState([]);
   const [assignments, setAssignments] = useState([]);
   const [isProfileModalOpen_2, setProfileModalOpen_2] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState(null);
+  const [isStudentModalOpen, setStudentModalOpen] = useState(false);
 
   const toggleProfileModal_2 = () => {
     setProfileModalOpen_2(!isProfileModalOpen_2);
@@ -43,7 +44,10 @@ const LectureHome = ({ userRole }) => {
     faculty: "",
     department: "",
   });
-
+  const handleCourseInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewCourse((prevCo) => ({ ...prevCo, [name]: value }));
+  };
   const [newAssignment, setNewAssignment] = useState({
     coursename: "",
     coursecode: "",
@@ -54,7 +58,10 @@ const LectureHome = ({ userRole }) => {
     assignmentname: "",
     description: "",
   });
-
+  const handleAssignmentInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewAssignment((prevAss) => ({ ...prevAss, [name]: value }));
+  };
   const [newExam, setNewExam] = useState({
     coursename: "",
     coursecode: "",
@@ -64,10 +71,10 @@ const LectureHome = ({ userRole }) => {
     faculty: "",
     department: "",
   });
-
-  const [selectedStudent, setSelectedStudent] = useState(null);
-  const [isStudentModalOpen, setStudentModalOpen] = useState(false);
-
+  const handleExamInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewExam((prevExam) => ({ ...prevExam, [name]: value }));
+  };
   const handleSectionChange = (section) => {
     setActiveSection(section);
 
@@ -121,116 +128,6 @@ const LectureHome = ({ userRole }) => {
       ...prevGrade,
       subjects: prevGrade.subjects.filter((_, i) => i !== index),
     }));
-  };
-
-  const handleAddCourse = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost:3001/lecture/createCourse",
-        newCourse
-      );
-      setCourses([...courses, response.data]);
-      setNewCourse({
-        coursename: "",
-        coursecode: "",
-        lecturername: "",
-        faculty: "",
-        department: "",
-      });
-      setAddCourseFormOpen(false);
-      toast.success("Course added successfully", {
-        icon: "👏",
-        style: {
-          border: "1px solid #4caf50",
-          padding: "16px",
-          color: "#4caf50",
-        },
-      });
-    } catch (error) {
-      toast.error("Something went wrong.", {
-        icon: "❌",
-        style: {
-          border: "1px solid #ff4d4f",
-          padding: "16px",
-          color: "#ff4d4f",
-        },
-      });
-    }
-  };
-
-  const handleAddAssignment = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost:3001/lecture/createAssignment",
-        newAssignment
-      );
-      setAssignments([...assignments, response.data]);
-      setNewAssignment({
-        coursename: "",
-        coursecode: "",
-        assignmentname: "",
-        description: "",
-        lecturername: "",
-        deadline: "",
-        department: "",
-        faculty: "",
-      });
-      setAddAssignmentFormOpen(false);
-      toast.success("Assignment added successfully", {
-        icon: "👏",
-        style: {
-          border: "1px solid #4caf50",
-          padding: "16px",
-          color: "#4caf50",
-        },
-      });
-    } catch (error) {
-      toast.error("Something went wrong.", {
-        icon: "❌",
-        style: {
-          border: "1px solid #ff4d4f",
-          padding: "16px",
-          color: "#ff4d4f",
-        },
-      });
-    }
-  };
-
-  const handleScheduleExam = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost:3001/lecture/createExam",
-        newExam
-      );
-      setExams([...exams, response.data]);
-      setNewExam({
-        coursename: "",
-        coursecode: "",
-        date: "",
-        time: "",
-        location: "",
-        department: "",
-        faculty: "",
-      });
-      setExamScheduleFormOpen(false);
-      toast.success("exam sheduled successfully", {
-        icon: "👏",
-        style: {
-          border: "1px solid #4caf50",
-          padding: "16px",
-          color: "#4caf50",
-        },
-      });
-    } catch (error) {
-      toast.error("Something went wrong.", {
-        icon: "❌",
-        style: {
-          border: "1px solid #ff4d4f",
-          padding: "16px",
-          color: "#ff4d4f",
-        },
-      });
-    }
   };
 
   const handleGrade = async () => {
@@ -287,21 +184,19 @@ const LectureHome = ({ userRole }) => {
   };
 
   const handleLogOut = () => {
-    localStorage.removeItem("userinfo");
-    userRole = "";
+    localStorage.removeItem("accessToken");
     window.location.reload();
   };
 
   const fetchStudents = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/auth/getUsers/${userDetails.department}`
+        `http://localhost:3001/auth/fetchUsers/${userDetails.department}`
       );
-      console.log("Fetched students:", response.data); // Debugging
       if (Array.isArray(response.data)) {
         setStudents(response.data);
       } else if (response.data) {
-        setStudents([response.data]); // Convert single object to array
+        setStudents([response.data]);
       } else {
         console.error("Unexpected response data:", response.data);
       }
@@ -313,9 +208,15 @@ const LectureHome = ({ userRole }) => {
   const fetchCourses = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/lecture/getCourse/${userDetails.department}`
+        `http://localhost:3001/lecture/getCourses/${userDetails.department}`
       );
-      setCourses(response.data);
+      if (Array.isArray(response.data)) {
+        setCourses(response.data);
+      } else if (response.data) {
+        setCourses([response.data]); // Convert single object to array
+      } else {
+        console.error("Unexpected response data:", response.data);
+      }
     } catch (error) {
       console.error("Failed to fetch courses", error);
     }
@@ -326,7 +227,13 @@ const LectureHome = ({ userRole }) => {
       const response = await axios.get(
         `http://localhost:3001/lecture/getAssignments/${userDetails.department}`
       );
-      setAssignments(response.data);
+      if (Array.isArray(response.data)) {
+        setAssignments(response.data);
+      } else if (response.data) {
+        setAssignments([response.data]);
+      } else {
+        console.error("Unexpected response data:", response.data);
+      }
     } catch (error) {
       console.error("Failed to fetch assignments", error);
     }
@@ -335,34 +242,97 @@ const LectureHome = ({ userRole }) => {
   const fetchExams = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/lecture/getExams/${userDetails.department}`
+        `http://localhost:3001/lecture/getSheduledExams/${userDetails.department}`
       );
-      setExams(response.data);
+      if (Array.isArray(response.data)) {
+        setExams(response.data);
+      } else if (response.data) {
+        setExams([response.data]); // Convert single object to array
+      } else {
+        console.error("Unexpected response data:", response.data);
+      }
     } catch (error) {
       console.error("Failed to fetch exams", error);
     }
   };
   const fetchGrades = async () => {
     try {
-      console.log("Fetching grades for department:", userDetails.department); // Debugging
       const response = await axios.get(
         `http://localhost:3001/lecture/getGrades/${userDetails.department}`
       );
-      setGrades(response.data);
+      if (Array.isArray(response.data)) {
+        console.log(response.data);
+        setGrades(response.data);
+      } else if (response.data) {
+        console.log(response.data);
+        setGrades([response.data]);
+      } else {
+        console.error("Unexpected response data:", response.data);
+      }
     } catch (error) {
       console.error("Failed to fetch grades", error);
     }
   };
-  const handleDelete = async (studentnumber) => {
+  const handleDelete = async (id) => {
     try {
       const response = await axios.delete(
-        `http://localhost:3001/lecture/deleteGrade/${studentnumber}`
+        `http://localhost:3001/lecture/deleteGrade/${id}`
       );
       if (response.status === 200) {
         console.log("Grade deleted successfully");
-        // Optionally, you can also remove the deleted grade from the state
-        setGrades(
-          grades.filter((grade) => grade.studentnumber !== studentnumber)
+        setGrades(grades.filter((grade) => grade._id !== id));
+        toast.success("successfully deleted");
+      } else {
+        toast.error("Something went wrong");
+        // Optionally, inform the user about the failure
+      }
+    } catch (error) {
+      toast.error("Something went wrong");
+    }
+  };
+  const handleDeleteStudent = async (id) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:3001/lecture/deleteStudent/${id}`
+      );
+      if (response.status === 200) {
+        console.log("Grade deleted successfully");
+        setStudents(students.filter((student) => student._id !== id));
+        toast.success("successfully deleted");
+      } else {
+        toast.error("Something went wrong");
+        // Optionally, inform the user about the failure
+      }
+    } catch (error) {
+      toast.error("Something went wrong");
+    }
+  };
+  const handleDeleteCourse = async (id) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:3001/lecture/deleteCourse/${id}`
+      );
+      if (response.status === 200) {
+        console.log("Grade deleted successfully");
+        setCourses(courses.filter((courses) => courses._id !== id));
+        toast.success("successfully deleted");
+      } else {
+        toast.error("Something went wrong");
+        // Optionally, inform the user about the failure
+      }
+    } catch (error) {
+      toast.error("Something went wrong");
+    }
+  };
+  const handleDeleteAssignment = async (id) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:3001/lecture/deleteAssignment/${id}`
+      );
+      if (response.status === 200) {
+        console.log("Grade deleted successfully");
+        setAssignments(
+          assignments.filter((assignment) => assignment._id !== id)
         );
         toast.success("successfully deleted");
       } else {
@@ -373,28 +343,23 @@ const LectureHome = ({ userRole }) => {
       toast.error("Something went wrong");
     }
   };
-
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
-        const userinfo = JSON.parse(localStorage.getItem("userinfo"));
-        const email = userinfo?.email;
-        if (email) {
-          const response = await axios.get(
-            `http://localhost:3001/lecture/getLecturers/${email}`
-          );
-          setUserDetails(response.data);
-        } else {
-          console.log("No email found in localStorage.");
-        }
-      } catch (error) {
-        console.error("Failed to fetch user details", error);
+  const handleDeleteExam = async (id) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:3001/lecture/deleteExam/${id}`
+      );
+      if (response.status === 200) {
+        console.log("Grade deleted successfully");
+        setExams(exams.filter((exam) => exam._id !== id));
+        toast.success("successfully deleted");
+      } else {
+        toast.error("Something went wrong");
+        // Optionally, inform the user about the failure
       }
-    };
-
-    fetchUserDetails();
-  }, []);
-
+    } catch (error) {
+      toast.error("Something went wrong");
+    }
+  };
   useEffect(() => {
     if (userDetails.department) {
       fetchStudents();
@@ -453,6 +418,14 @@ const LectureHome = ({ userRole }) => {
               <div className="items-container">
                 {courses.map((course, index) => (
                   <div className="item" key={index}>
+                    <button
+                      className="delete-icon"
+                      onClick={() => {
+                        handleDeleteCourse(course._id);
+                      }}
+                    >
+                      <FaTrash />
+                    </button>
                     <h4>Course Name: {course.coursename}</h4>
                     <h4>Course Code: {course.coursecode}</h4>
                     <h4>Lecturer Name: {course.lecturername}</h4>
@@ -471,7 +444,17 @@ const LectureHome = ({ userRole }) => {
                       className="student"
                       onClick={() => handleStudentClick(student)}
                     >
-                      {student.username} - {student.email}
+                      <p className="unandemail">
+                        {student.username} - {student.email}
+                      </p>
+                      <button
+                        className="delete-icon"
+                        onClick={() => {
+                          handleDeleteStudent(student._id);
+                        }}
+                      >
+                        <FaTrash />
+                      </button>
                     </li>
                   ))}
                 </ul>
@@ -488,6 +471,14 @@ const LectureHome = ({ userRole }) => {
               <div className="items-container">
                 {assignments.map((assignment, index) => (
                   <div className="item" key={index}>
+                    <button
+                      className="delete-icon"
+                      onClick={() => {
+                        handleDeleteAssignment(assignment._id);
+                      }}
+                    >
+                      <FaTrash />
+                    </button>
                     <h4>Course Code: {assignment.coursecode}</h4>
                     <h4>Course Name: {assignment.coursename}</h4>
                     <h4>Assignment: {assignment.assignmentname}</h4>
@@ -507,6 +498,14 @@ const LectureHome = ({ userRole }) => {
               <div className="items-container">
                 {exams.map((exam, index) => (
                   <div className="item" key={index}>
+                    <button
+                      className="delete-icon"
+                      onClick={() => {
+                        handleDeleteExam(exam._id);
+                      }}
+                    >
+                      <FaTrash />
+                    </button>
                     <h4>Exam: {exam.coursecode}</h4>
                     <h4>Date: {exam.date}</h4>
                     <h4>Time: {exam.time}</h4>
@@ -526,25 +525,25 @@ const LectureHome = ({ userRole }) => {
               <div className="items-container">
                 {grades.map((grade, index) => (
                   <div className="itemx" key={index}>
-                    <h4>Username: {grade.username}</h4>
-                    <h4>
-                      Student Number: {formatStudentNumber(grade.studentnumber)}
-                    </h4>
+                    <div className="beefore">
+                      <h4 className="nameWithIcon">
+                        <button
+                          className="delete-icon"
+                          onClick={() => {
+                            handleDelete(grade._id);
+                          }}
+                        >
+                          <FaTrash />
+                        </button>
+                        <h4 className="nameUser">{grade.username}-{formatStudentNumber(grade.studentnumber)}</h4>
+                      </h4>
+                      
+                    </div>
 
                     <div className="grade-container">
                       {grade.subjects.map((subject, subIndex) => (
                         <div className="grade" key={subIndex}>
-                          <h4>
                             {subject.subjectname}- {subject.grade}
-                          </h4>
-                          <button
-                            className="delete-icon"
-                            onClick={() => {
-                              handleDelete(grade.studentnumber);
-                            }}
-                          >
-                            <FaTrash />
-                          </button>
                         </div>
                       ))}
                     </div>
@@ -575,24 +574,30 @@ const LectureHome = ({ userRole }) => {
         isOpen={isAddCourseFormOpen}
         toggleModal={toggleAddCourseForm}
         newCourse={newCourse}
-        handleInputChange={handleInputChange}
-        handleAddCourse={handleAddCourse}
+        setNewCourse={setNewCourse}
+        setCourses={setCourses}
+        courses={courses}
+        handleCourseInputChange={handleCourseInputChange}
       />
 
       <AddAssignmentModal
         isOpen={isAddAssignmentFormOpen}
         toggleModal={toggleAddAssignmentForm}
         newAssignment={newAssignment}
-        handleInputChange={handleInputChange}
-        handleAddAssignment={handleAddAssignment}
+        setNewAssignment={setNewAssignment}
+        setAssignments={setAssignments}
+        assignments={assignments}
+        handleAssignmentInputChange={handleAssignmentInputChange}
       />
 
       <ScheduleExamModal
         isOpen={isExamScheduleFormOpen}
         toggleModal={toggleExamScheduleForm}
         newExam={newExam}
-        handleInputChange={handleInputChange}
-        handleScheduleExam={handleScheduleExam}
+        setNewExam={setNewExam}
+        setExams={setExams}
+        exams={exams}
+        handleExamInputChange={handleExamInputChange}
       />
 
       <GradeModal

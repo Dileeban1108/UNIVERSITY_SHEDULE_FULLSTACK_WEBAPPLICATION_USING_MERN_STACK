@@ -5,10 +5,10 @@ import ProfileModal from "../components/StudentProfileModal"; // Import ProfileM
 import LectureDetailsModal from "../components/LectureDetailsModal";
 import toast from "react-hot-toast";
 import { Toaster } from "react-hot-toast";
-const UserHome = ({ userRole }) => {
+import { jwtDecode } from "jwt-decode";
+const UserHome = ({ userRole,userDetails }) => {
   const [activeSection, setActiveSection] = useState("courses");
   const [isProfileModalOpen, setProfileModalOpen] = useState(false);
-  const [userDetails, setUserDetails] = useState({});
   const [courses, setCourses] = useState([]);
   const [enrolledCourses, setEnrolledCourses] = useState([]);
   const [lecturers, setLecturers] = useState([]);
@@ -36,8 +36,7 @@ const UserHome = ({ userRole }) => {
   };
 
   const handleLogOut = () => {
-    localStorage.removeItem("userinfo");
-    userRole = "";
+    localStorage.removeItem("accessToken");
     window.location.reload();
   };
   const handleLecturerClick = (student) => {
@@ -50,13 +49,12 @@ const UserHome = ({ userRole }) => {
   const fetchLecturers = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/lecture/getLecturer/${userDetails.department}`
+        `http://localhost:3001/lecture/getLecturers/${userDetails.department}`
       );
-      console.log("Fetched students:", response.data); // Debugging
       if (Array.isArray(response.data)) {
         setLecturers(response.data);
       } else if (response.data) {
-        setLecturers([response.data]); // Convert single object to array
+        setLecturers([response.data]); 
       } else {
         console.error("Unexpected response data:", response.data);
       }
@@ -68,7 +66,7 @@ const UserHome = ({ userRole }) => {
   const fetchCourses = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/lecture/getCourse/${userDetails.department}`
+        `http://localhost:3001/lecture/getCourses/${userDetails.department}`
       );
       if (Array.isArray(response.data)) {
         setCourses(response.data);
@@ -102,7 +100,7 @@ const UserHome = ({ userRole }) => {
   const fetchAssignments = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/lecture/getAssignment/${userDetails.department}`
+        `http://localhost:3001/lecture/getAssignments/${userDetails.department}`
       );
       if (Array.isArray(response.data)) {
         setAssignments(response.data);
@@ -242,27 +240,7 @@ const UserHome = ({ userRole }) => {
     )}/${studentnumber.slice(6)}`;
   };
 
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
-        const userinfo = JSON.parse(localStorage.getItem("userinfo"));
-        const email = userinfo?.email;
-        if (email) {
-          const response = await axios.get(
-            `http://localhost:3001/auth/getUser/${email}`
-          );
-          setUserDetails(response.data);
-          console.log(userDetails.email);
-        } else {
-          console.log("No email found in localStorage.");
-        }
-      } catch (error) {
-        console.error("Failed to fetch user details", error);
-      }
-    };
 
-    fetchUserDetails();
-  }, []);
 
   useEffect(() => {
     if (userDetails.department) {
